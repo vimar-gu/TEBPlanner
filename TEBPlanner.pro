@@ -15,7 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     src/main.cpp\
     src/Field.cpp \
-    src/Interaction.cpp
+    src/Interaction.cpp \
+    src/Model.cpp
 
 RESOURCES += qml.qrc
 
@@ -32,4 +33,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     src/Field.h \
-    src/Interaction.h
+    src/Interaction.h \
+    src/Model.h
