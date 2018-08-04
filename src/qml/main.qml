@@ -8,13 +8,35 @@ import Client.Component 2.0 as Client
 Window {
     id: root
     visible: true
-    width: 640
-    height: 480
+    width: 1080
+    height: 720
     title: qsTr("Hello World")
 
-    Row {
-        Client.Field {
-            id: map
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        onClicked: {
+            if (mouse.button === Qt.RightButton) {
+                Qt.quit()
+            }
+            else if (mouse.button === Qt.LeftButton) {
+                color = Qt.rgba((mouse.x % 255) / 255.0, (mouse.y % 255) / 255.0, 0.6, 1.0)
+            }
+        }
+        onDoubleClicked: {
+            color = "gray"
+        }
+    }
+
+    Text {
+        id: text1
+        x: 246
+        y: 196
+        text: qsTr("Text")
+        font.pixelSize: 30
+        MouseArea {
+            anchors.fill: parent
+            drag.target: text1
         }
     }
 }

@@ -16,7 +16,9 @@ SOURCES += \
     src/main.cpp\
     src/Field.cpp \
     src/Interaction.cpp \
-    src/Model.cpp
+    src/Model.cpp \
+    src/World.cpp \
+    src/Trajectory.cpp
 
 RESOURCES += qml.qrc
 
@@ -34,4 +36,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     src/Field.h \
     src/Interaction.h \
-    src/Model.h
+    src/Model.h \
+    src/World.h \
+    src/singleton.h \
+    src/Trajectory.h
