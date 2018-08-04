@@ -12,31 +12,38 @@ Window {
     height: 720
     title: qsTr("Hello World")
 
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: {
-            if (mouse.button === Qt.RightButton) {
-                Qt.quit()
-            }
-            else if (mouse.button === Qt.LeftButton) {
-                color = Qt.rgba((mouse.x % 255) / 255.0, (mouse.y % 255) / 255.0, 0.6, 1.0)
+    Row {
+        Client.Field {
+            id: map
+            width: 720
+            height: 720
+            Text {
+                id: tmpText
+                text: qsTr("text")
+                font.pointSize: 14
+                x: 20
+                y: 20
+                MouseArea {
+                    anchors.fill: parent
+                    drag.target: tmpText
+                }
             }
         }
-        onDoubleClicked: {
-            color = "gray"
-        }
-    }
-
-    Text {
-        id: text1
-        x: 246
-        y: 196
-        text: qsTr("Text")
-        font.pixelSize: 30
-        MouseArea {
-            anchors.fill: parent
-            drag.target: text1
+        Column {
+            RadioButton {
+                id: radioButton
+                text: qsTr("1")
+                activeFocusOnPress: false
+                checked: false
+                onCheckedChanged: {
+                    if (checked === true) {
+                        tmpText.visible = true
+                    }
+                    else {
+                        tmpText.visible = false
+                    }
+                }
+            }
         }
     }
 }
