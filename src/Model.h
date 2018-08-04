@@ -34,9 +34,9 @@ public:
     double x() const { return _x; }
     double y() const { return _y; }
     double dist(const CGeoPoint& p) const { return CVector(p - CGeoPoint(_x, _y)).mod(); }
-    CGeoPoint operator+(const CVector& v) const { return CGeoPoint(_x + v.x(), _y + v.y()); }
-    CGeoPoint operator*(const double& a) const { return CGeoPoint(_x * a, _y * a); }
-    CVector operator-(const CGeoPoint& p) const { return CVector(_x - p.x(), _y - p.y()); }
+    CGeoPoint operator +(const CVector& v) const { return CGeoPoint(_x + v.x(), _y + v.y()); }
+    CGeoPoint operator *(const double& a) const { return CGeoPoint(_x * a, _y * a); }
+    CVector operator -(const CGeoPoint& p) const { return CVector(_x - p.x(), _y - p.y()); }
     CGeoPoint midPoint(const CGeoPoint& p) const{ return CGeoPoint((_x + p.x()) / 2, (_y + p.y()) / 2); }
 private:
     double _x, _y;
