@@ -30,9 +30,15 @@ Window {
             }
         }
         Column {
+            Label {
+                id: enemyObs
+                text: qsTr("Enemy Obstacles")
+            }
+
             RadioButton {
                 id: radioButton
-                text: qsTr("1")
+                width: 30
+                height: 30
                 activeFocusOnPress: false
                 checked: false
                 onCheckedChanged: {
@@ -43,7 +49,16 @@ Window {
                         tmpText.visible = false
                     }
                 }
+
+                Image {
+                    id: img1
+                    width: 30
+                    height: 30
+                    source: "../../resource/1.png"
+                }
             }
+
+
         }
     }
 }
