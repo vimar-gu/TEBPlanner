@@ -15,17 +15,23 @@ Window {
     Row {
         Client.Field {
             id: map
+            x: 10
             width: 720
             height: 720
-            Text {
-                id: tmpText
-                text: qsTr("text")
-                font.pointSize: 14
-                x: 20
-                y: 20
+            Image {
+                id: obs1
+                objectName: "obs1"
+                x: 100
+                y: 100
+                width: 30
+                height: 30
+                source: "../../resource/1.png"
                 MouseArea {
                     anchors.fill: parent
-                    drag.target: tmpText
+                    drag.target: obs1
+                }
+                function x() {
+                    return obs1.x
                 }
             }
         }
@@ -43,10 +49,10 @@ Window {
                 checked: false
                 onCheckedChanged: {
                     if (checked === true) {
-                        tmpText.visible = true
+                        obs1.visible = true
                     }
                     else {
-                        tmpText.visible = false
+                        obs1.visible = false
                     }
                 }
 
