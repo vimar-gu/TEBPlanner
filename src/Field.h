@@ -10,17 +10,32 @@ class Field : public QQuickPaintedItem {
 public:
     void paint(QPainter* painter) override;
     Field(QQuickItem *parent = 0);
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 signals:
 public slots:
     void draw();
 private:
     void initField();
     void fillField();
+    void checkClosestRobot(double x,double y);
+    void leftMoveEvent(QMouseEvent *);
+    void leftPressEvent(QMouseEvent *);
+    void leftReleaseEvent(QMouseEvent *);
+    void rightMoveEvent(QMouseEvent *);
+    void rightPressEvent(QMouseEvent *);
+    void rightReleaseEvent(QMouseEvent *);
+    void resetAfterMouseEvent();
     QPixmap *pixmap;
     QPainter pixmapPainter;
     QPainterPath painterPath;
     QPen pen;
     QRect area;
+    int pressed;
+    bool pressedRobot;
+    QPoint start;
+    QPoint end;
 };
 
 #endif // FIELD_H

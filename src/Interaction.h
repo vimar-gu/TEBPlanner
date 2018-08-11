@@ -8,6 +8,7 @@ class Interaction : public QObject
     Q_OBJECT
 public:
     explicit Interaction(QObject *parent = 0);
+    Q_INVOKABLE void setVision();
 };
 
 #endif // INTERACTION_H

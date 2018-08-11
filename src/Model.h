@@ -42,7 +42,20 @@ private:
     double _x, _y;
 };
 
-class Robot {
+struct MoveObj {
+public:
+    MoveObj() {}
+    CGeoPoint pos() const { return _pos; }
+    CVector vel() const { return _vel; }
+    void setPos(const CGeoPoint& pos) { _pos = CGeoPoint(pos); }
+    void setVel(const CVector& vel) { _vel = CVector(vel); }
+    CGeoPoint _pos;
+    CVector _vel;
+};
+
+typedef MoveObj Obstacle;
+
+class Robot : public MoveObj {
 public:
     Robot() {}
     CGeoPoint pos() const { return _pos; }
@@ -54,22 +67,8 @@ public:
     void setDir(const double& dir) { _dir = dir; }
     void setRotVel(const double& rotVel) { _rotVel = rotVel; }
 private:
-    CGeoPoint _pos;
-    CVector _vel;
     double _dir;
     double _rotVel;
-};
-
-class Obstacle {
-public:
-    Obstacle() {}
-    CGeoPoint pos() const { return _pos; }
-    CVector vel() const { return _vel; }
-    void setPos(const CGeoPoint& pos) { _pos = CGeoPoint(pos); }
-    void setVel(const CVector& vel) { _vel = CVector(vel); }
-private:
-    CGeoPoint _pos;
-    CVector _vel;
 };
 
 class RoundObstacle : private Obstacle {

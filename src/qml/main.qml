@@ -12,59 +12,28 @@ Window {
     height: 720
     title: qsTr("Hello World")
 
+    Client.Interaction{ id : interaction }
+
     Row {
         Client.Field {
             id: map
             x: 10
             width: 720
             height: 720
-            Image {
-                id: obs1
-                objectName: "obs1"
-                x: 100
-                y: 100
-                width: 30
-                height: 30
-                source: "../../resource/1.png"
-                MouseArea {
-                    anchors.fill: parent
-                    drag.target: obs1
-                }
-                function x() {
-                    return obs1.x
-                }
             }
         }
-        Column {
-            Label {
-                id: enemyObs
-                text: qsTr("Enemy Obstacles")
+    Column {
+        Button {
+            id: startButton
+            text: qsTr("start")
+            onClicked: {
+                interaction.setVision()
             }
+        }
 
-            RadioButton {
-                id: radioButton
-                width: 30
-                height: 30
-                activeFocusOnPress: false
-                checked: false
-                onCheckedChanged: {
-                    if (checked === true) {
-                        obs1.visible = true
-                    }
-                    else {
-                        obs1.visible = false
-                    }
-                }
-
-                Image {
-                    id: img1
-                    width: 30
-                    height: 30
-                    source: "../../resource/1.png"
-                }
-            }
-
-
+        Label {
+            id: enemyObs
+            text: qsTr("Enemy Obstacles")
         }
     }
 }
