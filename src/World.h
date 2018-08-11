@@ -20,7 +20,7 @@ public:
 signals:
     void needDraw();
 public slots:
-//    void fresh();
+    void fresh();
 private:
     vector<Robot> robotVec;
     vector<Obstacle> obsVec;

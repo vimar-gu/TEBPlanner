@@ -13,7 +13,7 @@ namespace{
 }
 
 Field::Field(QQuickItem *parent): QQuickPaintedItem(parent), pixmap(nullptr), pen(Qt::white,1) {
-//    connect(City::instance(),SIGNAL(needDraw()),this,SLOT(draw()));
+    connect(World::instance(),SIGNAL(needDraw()),this,SLOT(draw()));
     pixmap = new QPixmap(QSize(600, 500));
     pixmapPainter.begin(pixmap);
     area = QRect(0,0,600,500);

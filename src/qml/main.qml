@@ -20,20 +20,20 @@ Window {
             x: 10
             width: 720
             height: 720
-            }
         }
-    Column {
-        Button {
-            id: startButton
-            text: qsTr("start")
-            onClicked: {
-                interaction.setVision()
+        Column {
+            Button {
+                id: startButton
+                text: qsTr("start")
+                onClicked: {
+                    interaction.setVision()
+                }
             }
-        }
 
-        Label {
-            id: enemyObs
-            text: qsTr("Enemy Obstacles")
+            Label {
+                id: enemyObs
+                text: qsTr("Enemy Obstacles")
+            }
         }
     }
 }
