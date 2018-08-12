@@ -45,6 +45,8 @@ private:
 struct MoveObj {
 public:
     MoveObj() {}
+    MoveObj(CGeoPoint pos) : _pos(pos) {}
+    MoveObj(double x, double y) : _pos(CGeoPoint(x, y)) {}
     CGeoPoint pos() const { return _pos; }
     CVector vel() const { return _vel; }
     void setPos(const CGeoPoint& pos) { _pos = CGeoPoint(pos); }

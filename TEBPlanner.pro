@@ -39,4 +39,5 @@ HEADERS += \
     src/Model.h \
     src/World.h \
     src/singleton.h \
-    src/Trajectory.h
+    src/Trajectory.h \
+    src/config.h

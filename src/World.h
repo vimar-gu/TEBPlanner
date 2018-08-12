@@ -14,6 +14,7 @@ class CWorld : public QObject {
 public:
     CWorld();
     void start();
+    void freshTraj();
     vector<Robot> getRobotVec() { return robotVec; }
     vector<Obstacle> getObsVec() { return obsVec; }
     vector<CGeoPoint> getTrajVec() { return trajVec; }

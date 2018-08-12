@@ -2,6 +2,7 @@
 #include "field.h"
 #include "World.h"
 #include "Model.h"
+#include "config.h"
 
 namespace{
     const static QColor COLOR_BLUE(210,210,255);
@@ -13,10 +14,14 @@ namespace{
 }
 
 Field::Field(QQuickItem *parent): QQuickPaintedItem(parent), pixmap(nullptr), pen(Qt::white,1) {
+    setAcceptHoverEvents(true);
+    setAcceptedMouseButtons(Qt::AllButtons);
+    setFlag(ItemAcceptsInputMethod, true);
+
     connect(World::instance(),SIGNAL(needDraw()),this,SLOT(draw()));
-    pixmap = new QPixmap(QSize(600, 500));
+    pixmap = new QPixmap(QSize(720, 720));
     pixmapPainter.begin(pixmap);
-    area = QRect(0,0,600,500);
+    area = QRect(0,0,720,720);
 }
 
 void Field::draw() {
@@ -32,6 +37,7 @@ void Field::paint(QPainter* painter){
 
 void Field::mousePressEvent(QMouseEvent *e) {
     pressed = e->buttons();
+    qDebug() << "hi";
 //    checkClosestRobot(rx(e->x()),ry(e->y()));
 //    start = end = rp(e->pos());
     switch(pressed){
@@ -139,12 +145,19 @@ void Field::rightReleaseEvent(QMouseEvent *e){
     }
 }
 
+void Field::paintObstacle(const QColor &color, qreal x, qreal y) {
+    static float radius = OBSTACLE_RADIUS;
+    pixmapPainter.setBrush(QBrush(color));
+    pixmapPainter.setPen(Qt::NoPen);
+    pixmapPainter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius);
+}
+
 void Field::fillField() {
     for (auto robot : World::instance()->getRobotVec()) {
 
     }
     for (auto obs : World::instance()->getObsVec()) {
-
+        paintObstacle(COLOR_PINK, obs.pos().x(), obs.pos().y());
     }
     for (auto trajPos : World::instance()->getTrajVec()) {
 
