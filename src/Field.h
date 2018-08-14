@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QImage>
+#include "World.h"
 
 class Field : public QQuickPaintedItem {
     Q_OBJECT
@@ -21,18 +22,16 @@ private:
     void fillField();
     void paintObstacle(const QColor &color, qreal x, qreal y);
     void checkClosestRobot(double x,double y);
-    void leftMoveEvent(QMouseEvent *);
-    void leftPressEvent(QMouseEvent *);
-    void leftReleaseEvent(QMouseEvent *);
-    void rightMoveEvent(QMouseEvent *);
-    void rightPressEvent(QMouseEvent *);
-    void rightReleaseEvent(QMouseEvent *);
+    void leftMoveEvent(QMouseEvent *e);
+    void leftPressEvent(QMouseEvent *e);
+    void leftReleaseEvent(QMouseEvent *e);
     void resetAfterMouseEvent();
     QPixmap *pixmap;
     QPainter pixmapPainter;
     QPainterPath painterPath;
     QPen pen;
     QRect area;
+    MoveObj *movingObj;
     int pressed;
     bool pressedRobot;
     QPoint start;

@@ -1,7 +1,5 @@
 #include <QDebug>
 #include "field.h"
-#include "World.h"
-#include "Model.h"
 #include "config.h"
 
 namespace{
@@ -37,15 +35,10 @@ void Field::paint(QPainter* painter){
 
 void Field::mousePressEvent(QMouseEvent *e) {
     pressed = e->buttons();
-    qDebug() << "hi";
-//    checkClosestRobot(rx(e->x()),ry(e->y()));
-//    start = end = rp(e->pos());
+    checkClosestRobot(e->x(),e->y());
     switch(pressed){
     case Qt::LeftButton:
         leftPressEvent(e);
-        break;
-    case Qt::RightButton:
-        rightPressEvent(e);
         break;
     default:
         break;
@@ -53,13 +46,9 @@ void Field::mousePressEvent(QMouseEvent *e) {
 }
 
 void Field::mouseMoveEvent(QMouseEvent *e){
-//    end = rp(e->pos());
     switch(pressed){
     case Qt::LeftButton:
         leftMoveEvent(e);
-        break;
-    case Qt::RightButton:
-        rightMoveEvent(e);
         break;
     default:
         break;
@@ -70,9 +59,6 @@ void Field::mouseReleaseEvent(QMouseEvent *e){
     switch(pressed){
     case Qt::LeftButton:
         leftReleaseEvent(e);
-        break;
-    case Qt::RightButton:
-        rightReleaseEvent(e);
         break;
     default:
         break;
@@ -86,63 +72,37 @@ void Field::resetAfterMouseEvent(){
     start = end = QPoint(-9999,-9999);
 }
 
-void Field::checkClosestRobot(double x,double y){
-//    double limit = carDiameter*carDiameter/4;
-//    auto& vision = GlobalData::instance()->maintain[0];
-//    for(int color=BLUE;color<=YELLOW;color++){
-//        for(int j=0;j<vision.robotSize[color];j++){
-//            auto& robot = vision.robot[color][j];
-//            if(distance2(robot.pos.x()-x,robot.pos.y()-y)<limit){
-//                robotID = robot.id;
-//                robotTeam = color;
-//                pressedRobot = true;
-//                return;
-//            }
-//        }
-//    }
+void Field::checkClosestRobot(double x, double y){
+    double limit = OBSTACLE_RADIUS;
     pressedRobot = false;
+    for (auto& obs : World::instance()->obsVec) {
+        if (obs.pos().dist(CGeoPoint(x, y)) < limit) {
+            pressedRobot = true;
+            movingObj = &obs;
+        }
+    }
+    for (auto& robot : World::instance()->robotVec) {
+        if (robot.pos().dist(CGeoPoint(x, y)) < limit) {
+            pressedRobot = true;
+            movingObj = &robot;
+        }
+    }
 }
 
 void Field::leftMoveEvent(QMouseEvent *e){
     if(pressedRobot){
-//        Simulator::instance()->setRobot(rx(e->x())/1000.0,ry(e->y())/1000.0,robotID,robotTeam == YELLOW);
-    }else{
-//        Simulator::instance()->setBall(rx(e->x())/1000.0,ry(e->y())/1000.0);
+        movingObj->setPos(CGeoPoint(e->x(), e->y()));
     }
 }
 
 void Field::leftPressEvent(QMouseEvent *e){
     if(pressedRobot){
-//        Simulator::instance()->setRobot(rx(e->x())/1000.0,ry(e->y())/1000.0,robotID,robotTeam == YELLOW);
-    }else{
-//        Simulator::instance()->setBall(rx(e->x())/1000.0,ry(e->y())/1000.0);
+        movingObj->setPos(CGeoPoint(e->x(), e->y()));
     }
 }
 
 void Field::leftReleaseEvent(QMouseEvent *e){
 
-}
-
-void Field::rightMoveEvent(QMouseEvent *e){
-    QLineF line(start,end);
-    if(pressedRobot){
-//        displayData = -line.angle();
-//        if(displayData<-180) displayData += 360;
-//        Simulator::instance()->setRobot(start.x()/1000.0,start.y()/1000.0,robotID,robotTeam == YELLOW,displayData);
-    }else{
-//        displayData = line.length()/1000.0;
-    }
-}
-
-void Field::rightPressEvent(QMouseEvent *e){
-
-}
-
-void Field::rightReleaseEvent(QMouseEvent *e){
-//    QLineF line(start,end);
-    if(!pressedRobot){
-//        Simulator::instance()->setBall(start.x()/1000.0,start.y()/1000.0,line.dx()/1000.0,line.dy()/1000.0);
-    }
 }
 
 void Field::paintObstacle(const QColor &color, qreal x, qreal y) {

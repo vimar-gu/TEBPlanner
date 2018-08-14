@@ -13,7 +13,7 @@ CWorld::CWorld() {
 void CWorld::start() {
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(fresh()));
-    timer->start(50);
+    timer->start(10);
 }
 
 void CWorld::fresh() {
