@@ -15,17 +15,14 @@ public:
     CWorld();
     void start();
     void freshTraj();
-    vector<Robot>& getRobotVec() { return robotVec; }
-    vector<Obstacle>& getObsVec() { return obsVec; }
-    vector<CGeoPoint>& getTrajVec() { return trajVec; }
+    vector<Robot> robotVec;
+    vector<Obstacle> obsVec;
+    vector<CGeoPoint> trajVec;
+    MoveObj target;
 signals:
     void needDraw();
 public slots:
     void fresh();
-public:
-    vector<Robot> robotVec;
-    vector<Obstacle> obsVec;
-    vector<CGeoPoint> trajVec;
 };
 
 typedef Singleton<CWorld> World;

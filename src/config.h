@@ -1,6 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+const int ROBOT_NUMBER = 1;
 const int OBSTACLE_NUMBER = 10;
 const int TRAJ_POINT_NUMBER = 10;
 const double ORIGIN_X = 100;

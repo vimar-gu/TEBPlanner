@@ -20,7 +20,9 @@ public slots:
 private:
     void initField();
     void fillField();
+    void paintRobot(const QColor &color, qreal x, qreal y);
     void paintObstacle(const QColor &color, qreal x, qreal y);
+    void paintTarget(const QColor &color, qreal x, qreal y);
     void checkClosestRobot(double x,double y);
     void leftMoveEvent(QMouseEvent *e);
     void leftPressEvent(QMouseEvent *e);

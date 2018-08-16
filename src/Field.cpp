@@ -87,6 +87,10 @@ void Field::checkClosestRobot(double x, double y){
             movingObj = &robot;
         }
     }
+    if (World::instance()->target.pos().dist(CGeoPoint(x, y)) < limit) {
+        pressedRobot = true;
+        movingObj = &World::instance()->target;
+    }
 }
 
 void Field::leftMoveEvent(QMouseEvent *e){
@@ -105,6 +109,13 @@ void Field::leftReleaseEvent(QMouseEvent *e){
 
 }
 
+void Field::paintRobot(const QColor &color, qreal x, qreal y) {
+    static float radius = OBSTACLE_RADIUS;
+    pixmapPainter.setBrush(QBrush(color));
+    pixmapPainter.setPen(Qt::NoPen);
+    pixmapPainter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius);
+}
+
 void Field::paintObstacle(const QColor &color, qreal x, qreal y) {
     static float radius = OBSTACLE_RADIUS;
     pixmapPainter.setBrush(QBrush(color));
@@ -112,14 +123,22 @@ void Field::paintObstacle(const QColor &color, qreal x, qreal y) {
     pixmapPainter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius);
 }
 
-void Field::fillField() {
-    for (auto robot : World::instance()->getRobotVec()) {
+void Field::paintTarget(const QColor &color, qreal x, qreal y) {
+    static float radius = OBSTACLE_RADIUS;
+    pixmapPainter.setBrush(QBrush(color));
+    pixmapPainter.setPen(Qt::NoPen);
+    pixmapPainter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius);
+}
 
+void Field::fillField() {
+    for (auto robot : World::instance()->robotVec) {
+        paintRobot(COLOR_YELLOW, robot.pos().x(), robot.pos().y());
     }
-    for (auto obs : World::instance()->getObsVec()) {
+    for (auto obs : World::instance()->obsVec) {
         paintObstacle(COLOR_PINK, obs.pos().x(), obs.pos().y());
     }
-    for (auto trajPos : World::instance()->getTrajVec()) {
+    for (auto trajPos : World::instance()->trajVec) {
 
     }
+    paintTarget(COLOR_ORANGE, World::instance()->target.pos().x(), World::instance()->target.pos().y());
 }
