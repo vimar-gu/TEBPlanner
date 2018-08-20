@@ -17,7 +17,7 @@ public:
     void freshTraj();
     vector<Robot> robotVec;
     vector<Obstacle> obsVec;
-    vector<CGeoPoint> trajVec;
+    Trajectory traj;
     MoveObj target;
 signals:
     void needDraw();

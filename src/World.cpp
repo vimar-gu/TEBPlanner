@@ -27,5 +27,7 @@ void CWorld::fresh() {
 }
 
 void CWorld::freshTraj() {
-
+    for (Robot robot : robotVec) {
+        traj.plan(robot.pos(), target.pos(), obsVec);
+    }
 }

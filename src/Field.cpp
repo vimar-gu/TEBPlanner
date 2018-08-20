@@ -130,6 +130,14 @@ void Field::paintTarget(const QColor &color, qreal x, qreal y) {
     pixmapPainter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius);
 }
 
+void Field::paintTraj(const QColor &color, qreal x, qreal y) {
+    static float radius = OBSTACLE_RADIUS / 2;
+    pixmapPainter.setBrush(QBrush(Qt::NoBrush));
+    pixmapPainter.setPen(QPen(color, 2));
+    pixmapPainter.drawLine(QPointF(x - radius, y - radius), QPointF(x + radius, y + radius));
+    pixmapPainter.drawLine(QPointF(x - radius, y + radius), QPointF(x + radius, y - radius));
+}
+
 void Field::fillField() {
     for (auto robot : World::instance()->robotVec) {
         paintRobot(COLOR_YELLOW, robot.pos().x(), robot.pos().y());
@@ -137,8 +145,8 @@ void Field::fillField() {
     for (auto obs : World::instance()->obsVec) {
         paintObstacle(COLOR_PINK, obs.pos().x(), obs.pos().y());
     }
-    for (auto trajPos : World::instance()->trajVec) {
-
+    for (auto trajPos : World::instance()->traj.trajVec) {
+        paintTraj(COLOR_DARK_ORANGE, trajPos.x(), trajPos.y());
     }
     paintTarget(COLOR_ORANGE, World::instance()->target.pos().x(), World::instance()->target.pos().y());
 }

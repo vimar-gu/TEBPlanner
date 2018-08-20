@@ -1,14 +1,19 @@
 #ifndef ALGORITHM_H
 #define ALGORITHM_H
+#include <iostream>
+#include <vector>
+#include "Model.h"
+#include "config.h"
+using namespace std;
 
-#include "singleton.h"
-
-class CTrajectory
+class Trajectory
 {
 public:
-    CTrajectory();
+    Trajectory();
+    void clearTraj();
+    void plan(CGeoPoint start, CGeoPoint end, vector<Obstacle> obs);
+    vector<CGeoPoint> trajVec;
 };
 
-typedef Singleton<CTrajectory> Trajectory;
 
 #endif // ALGORITHM_H
