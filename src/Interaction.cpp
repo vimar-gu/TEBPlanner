@@ -9,6 +9,6 @@ void Interaction::setVision() {
     World::instance()->start();
 }
 
-void Interaction::addEnemyObstacle() {
-    World::instance()->addEnemyObstacle();
+void Interaction::addObstacle() {
+    World::instance()->addObstacle();
 }

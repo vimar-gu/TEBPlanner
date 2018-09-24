@@ -60,6 +60,9 @@ void Field::mouseReleaseEvent(QMouseEvent *e){
     case Qt::LeftButton:
         leftReleaseEvent(e);
         break;
+    case Qt::MiddleButton:
+        middleReleaseEvent(e);
+        break;
     default:
         break;
     }
@@ -93,20 +96,26 @@ void Field::checkClosestRobot(double x, double y){
     }
 }
 
-void Field::leftMoveEvent(QMouseEvent *e){
-    if(pressedRobot){
+void Field::leftMoveEvent(QMouseEvent *e) {
+    if (pressedRobot) {
         movingObj->setPos(CGeoPoint(e->x(), e->y()));
     }
 }
 
-void Field::leftPressEvent(QMouseEvent *e){
-    if(pressedRobot){
+void Field::leftPressEvent(QMouseEvent *e) {
+    if (pressedRobot) {
         movingObj->setPos(CGeoPoint(e->x(), e->y()));
     }
 }
 
-void Field::leftReleaseEvent(QMouseEvent *e){
+void Field::leftReleaseEvent(QMouseEvent *e) {
 
+}
+
+void Field::middleReleaseEvent(QMouseEvent *e) {
+    if (pressedRobot) {
+        World::instance()->deleteObstacle(movingObj);
+    }
 }
 
 void Field::paintRobot(const QColor &color, qreal x, qreal y) {

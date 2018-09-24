@@ -28,6 +28,7 @@ private:
     void leftMoveEvent(QMouseEvent *e);
     void leftPressEvent(QMouseEvent *e);
     void leftReleaseEvent(QMouseEvent *e);
+    void middleReleaseEvent(QMouseEvent *e);
     void resetAfterMouseEvent();
     QPixmap *pixmap;
     QPainter pixmapPainter;

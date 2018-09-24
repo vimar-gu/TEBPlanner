@@ -1,5 +1,6 @@
 #include <QQmlApplicationEngine>
 #include <QTimer>
+#include <QDebug>
 #include "World.h"
 #include "config.h"
 
@@ -32,6 +33,14 @@ void CWorld::freshTraj() {
     }
 }
 
-void CWorld::addEnemyObstacle() {
+void CWorld::addObstacle() {
+    int x = rand() % 10;
+    int y = rand() % 10;
+    Obstacle obs(ORIGIN_X + x * 50, ORIGIN_Y + y * 50);
+    obsVec.push_back(obs);
+}
 
+void CWorld::deleteObstacle(MoveObj* obj) {
+    auto obsIterator = find_if(obsVec.begin(), obsVec.end(), [=](Obstacle& obs){ return obj->pos() == obs.pos(); });
+    if (obsIterator != obsVec.end()) obsVec.erase(obsIterator);
 }

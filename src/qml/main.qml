@@ -50,7 +50,7 @@ Window {
                     font.pointSize: 12
                 }
                 onClicked: {
-                    interaction.addEnemyObstacle()
+                    interaction.addObstacle()
                 }
             }
         }
