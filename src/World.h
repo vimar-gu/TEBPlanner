@@ -15,6 +15,7 @@ public:
     CWorld();
     void start();
     void freshTraj();
+    void addEnemyObstacle();
     vector<Robot> robotVec;
     vector<Obstacle> obsVec;
     Trajectory traj;

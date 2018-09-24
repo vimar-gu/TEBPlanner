@@ -8,7 +8,7 @@ import Client.Component 2.0 as Client
 Window {
     id: root
     visible: true
-    width: 1080
+    width: 960
     height: 720
     title: qsTr("Hello World")
 
@@ -24,15 +24,34 @@ Window {
         Column {
             Button {
                 id: startButton
-                text: qsTr("start")
+                width: 240
+                height: 80
+                Text {
+                    x: 90
+                    y: 25
+                    text: qsTr("start")
+                    font.family: "Courier"
+                    font.pointSize: 14
+                }
                 onClicked: {
                     interaction.setVision()
                 }
             }
 
-            Label {
-                id: enemyObs
-                text: qsTr("Enemy Obstacles")
+            Button {
+                id: obstacles
+                width: 240
+                height: 80
+                Text {
+                    x: 32
+                    y: 28
+                    text: qsTr("add enemy obstacle")
+                    font.family: "Courier"
+                    font.pointSize: 12
+                }
+                onClicked: {
+                    interaction.addEnemyObstacle()
+                }
             }
         }
     }

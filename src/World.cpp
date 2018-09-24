@@ -31,3 +31,7 @@ void CWorld::freshTraj() {
         traj.plan(robot.pos(), target.pos(), obsVec);
     }
 }
+
+void CWorld::addEnemyObstacle() {
+
+}

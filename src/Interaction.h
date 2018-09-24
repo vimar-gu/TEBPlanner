@@ -9,6 +9,7 @@ class Interaction : public QObject
 public:
     explicit Interaction(QObject *parent = 0);
     Q_INVOKABLE void setVision();
+    Q_INVOKABLE void addEnemyObstacle();
 };
 
 #endif // INTERACTION_H
