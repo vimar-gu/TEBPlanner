@@ -12,3 +12,7 @@ void Interaction::setVision() {
 void Interaction::addObstacle() {
     World::instance()->addObstacle();
 }
+
+void Interaction::setTrajectoryMethod(int method) {
+    World::instance()->setTrajMethod(method);
+}

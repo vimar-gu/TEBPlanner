@@ -10,6 +10,7 @@ public:
     explicit Interaction(QObject *parent = 0);
     Q_INVOKABLE void setVision();
     Q_INVOKABLE void addObstacle();
+    Q_INVOKABLE void setTrajectoryMethod(int method);
 };
 
 #endif // INTERACTION_H

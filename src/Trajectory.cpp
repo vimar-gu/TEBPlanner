@@ -17,3 +17,7 @@ void Trajectory::plan(CGeoPoint start, CGeoPoint end, vector<Obstacle> obs) {
         trajVec.push_back(start + length * i);
     }
 }
+
+void Trajectory::setTrajectoryMethod(int method) {
+    trajMethod = method ? 1 : 0;
+}

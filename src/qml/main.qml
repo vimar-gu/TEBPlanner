@@ -53,6 +53,40 @@ Window {
                     interaction.addObstacle()
                 }
             }
+
+            Row {
+                Button {
+                    id: useRRT
+                    width: 120
+                    height: 80
+                    Text {
+                        x: 25
+                        y: 28
+                        text: qsTr("use RRT")
+                        font.family: "Courier"
+                        font.pointSize: 12
+                    }
+                    onClicked: {
+                        interaction.setTrajectoryMethod(0)
+                    }
+                }
+
+                Button {
+                    id: useTEB
+                    width: 120
+                    height: 80
+                    Text {
+                        x: 25
+                        y: 28
+                        text: qsTr("use TEB")
+                        font.family: "Courier"
+                        font.pointSize: 12
+                    }
+                    onClicked: {
+                        interaction.setTrajectoryMethod(1)
+                    }
+                }
+            }
         }
     }
 }

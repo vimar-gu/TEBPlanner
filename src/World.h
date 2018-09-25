@@ -17,6 +17,7 @@ public:
     void freshTraj();
     void addObstacle();
     void deleteObstacle(MoveObj* obj);
+    void setTrajMethod(int method) { traj.setTrajectoryMethod(method); }
     vector<Robot> robotVec;
     vector<Obstacle> obsVec;
     Trajectory traj;
