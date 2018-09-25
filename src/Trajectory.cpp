@@ -1,7 +1,6 @@
 #include "Trajectory.h"
 
-Trajectory::Trajectory()
-{
+Trajectory::Trajectory() {
 
 }
 
@@ -19,5 +18,5 @@ void Trajectory::plan(CGeoPoint start, CGeoPoint end, vector<Obstacle> obs) {
 }
 
 void Trajectory::setTrajectoryMethod(int method) {
-    trajMethod = method ? 1 : 0;
+    trajMethod = method ? TEB : RRT;
 }

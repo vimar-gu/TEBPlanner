@@ -6,6 +6,11 @@
 #include "config.h"
 using namespace std;
 
+namespace {
+    const int RRT = 0;
+    const int TEB = 1;
+}
+
 class Trajectory
 {
 public:
