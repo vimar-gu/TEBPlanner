@@ -18,7 +18,8 @@ SOURCES += \
     src/Interaction.cpp \
     src/Model.cpp \
     src/World.cpp \
-    src/Trajectory.cpp
+    src/Trajectory.cpp \
+    src/Tebplanner.cpp
 
 RESOURCES += qml.qrc
 
@@ -40,4 +41,5 @@ HEADERS += \
     src/World.h \
     src/singleton.h \
     src/Trajectory.h \
-    src/config.h
+    src/config.h \
+    src/Tebplanner.h
