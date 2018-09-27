@@ -5,6 +5,8 @@
 #include <vector>
 using namespace std;
 
+// the class of vectors
+
 class CVector {
 public:
     CVector() :	_x(0), _y(0) {}
@@ -24,6 +26,8 @@ public:
 private:
     double _x, _y;
 };
+
+// the class of points
 
 class CGeoPoint {
 public:
@@ -52,6 +56,8 @@ public:
     CVector _vel;
 };
 
+// the base class of both robots and obstacles
+
 struct MoveObj {
 public:
     MoveObj() {}
@@ -65,7 +71,11 @@ public:
     CVector _vel;
 };
 
+// define the obstacle the same as moveobj
+
 typedef MoveObj Obstacle;
+
+// define robots based on moveobj
 
 class Robot : public MoveObj {
 public:
