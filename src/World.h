@@ -28,6 +28,8 @@ public slots:
     void fresh();
 };
 
+// ensure there is only one world during the run
+
 typedef Singleton<CWorld> World;
 
 #endif // WORLD_H

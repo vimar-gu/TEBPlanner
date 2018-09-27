@@ -22,16 +22,20 @@ Field::Field(QQuickItem *parent): QQuickPaintedItem(parent), pixmap(nullptr), pe
     area = QRect(0,0,720,720);
 }
 
+// used to draw the whole field
+
 void Field::draw() {
-    pixmap->fill(COLOR_BLUE);
+    pixmap->fill(COLOR_BLUE); // backgound color
     pixmapPainter.strokePath(painterPath, pen);
-    fillField();
+    fillField(); // add elements
     this->update(area);
 }
 
 void Field::paint(QPainter* painter){
     painter->drawPixmap(area,*pixmap);
 }
+
+// used to catch the mouse events to update the field
 
 void Field::mousePressEvent(QMouseEvent *e) {
     pressed = e->buttons();
@@ -75,6 +79,8 @@ void Field::resetAfterMouseEvent(){
     start = end = QPoint(-9999,-9999);
 }
 
+// used to catch the object the mouse is pointing at
+
 void Field::checkClosestRobot(double x, double y){
     double limit = OBSTACLE_RADIUS;
     pressedRobot = false;
@@ -96,6 +102,8 @@ void Field::checkClosestRobot(double x, double y){
     }
 }
 
+// left click and move mouse can move the object
+
 void Field::leftMoveEvent(QMouseEvent *e) {
     if (pressedRobot) {
         movingObj->setPos(CGeoPoint(e->x(), e->y()));
@@ -111,6 +119,8 @@ void Field::leftPressEvent(QMouseEvent *e) {
 void Field::leftReleaseEvent(QMouseEvent *e) {
 
 }
+
+// middle click can remove a obstacle .. wait to adding more features
 
 void Field::middleReleaseEvent(QMouseEvent *e) {
     if (pressedRobot) {
@@ -146,6 +156,8 @@ void Field::paintTraj(const QColor &color, qreal x, qreal y) {
     pixmapPainter.drawLine(QPointF(x - radius, y - radius), QPointF(x + radius, y + radius));
     pixmapPainter.drawLine(QPointF(x - radius, y + radius), QPointF(x + radius, y - radius));
 }
+
+// add elements onto the field
 
 void Field::fillField() {
     for (auto robot : World::instance()->robotVec) {

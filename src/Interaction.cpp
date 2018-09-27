@@ -5,6 +5,8 @@ Interaction::Interaction(QObject *parent) : QObject(parent) {
 
 }
 
+// Q_INVOKABLE to interact with qml board
+
 void Interaction::setVision() {
     World::instance()->start();
 }
