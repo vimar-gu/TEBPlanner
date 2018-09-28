@@ -42,16 +42,6 @@ private:
     double _x, _y;
 };
 
-class Target {
-public:
-    Target() {}
-    Target(CGeoPoint pos) : _pos(pos), _vel(CVector()) {}
-    void setPos(CGeoPoint pos) { _pos = pos; }
-    void setVel(CVector vel) { _vel = vel; }
-    CGeoPoint _pos;
-    CVector _vel;
-};
-
 struct MoveObj {
 public:
     MoveObj() {}
@@ -70,6 +60,7 @@ typedef MoveObj Obstacle;
 class Robot : public MoveObj {
 public:
     Robot() {}
+    Robot(CGeoPoint p) : MoveObj(p) {}
     Robot(double x, double y) : MoveObj(CGeoPoint(x, y)) {}
     double dir() const { return _dir; }
     double rotVel() const { return _rotVel; }
@@ -79,6 +70,8 @@ private:
     double _dir;
     double _rotVel;
 };
+
+typedef Robot State;
 
 class RoundObstacle : private Obstacle {
 

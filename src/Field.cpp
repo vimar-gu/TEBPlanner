@@ -166,8 +166,8 @@ void Field::fillField() {
     for (auto obs : World::instance()->obsVec) {
         paintObstacle(COLOR_PINK, obs.pos().x(), obs.pos().y());
     }
-    for (auto trajPos : World::instance()->traj.trajVec) {
-        paintTraj(COLOR_DARK_ORANGE, trajPos.x(), trajPos.y());
+    for (auto trajState : World::instance()->traj.trajVec) {
+        paintTraj(COLOR_DARK_ORANGE, trajState.pos().x(), trajState.pos().y());
     }
     paintTarget(COLOR_ORANGE, World::instance()->target.pos().x(), World::instance()->target.pos().y());
 }
