@@ -8,8 +8,14 @@ class TEBPlanner
 {
 public:
     TEBPlanner();
-    TEBPlanner(vector<CGeoPoint>& trajVec, CGeoPoint start, CGeoPoint end, vector<Obstacle> obs);
-    void plan(vector<CGeoPoint>& trajVec, CGeoPoint start, CGeoPoint end, vector<Obstacle> obs);
+    TEBPlanner(vector<State>& trajVec, CGeoPoint start, CGeoPoint end, vector<Obstacle> obs);
+    void plan(vector<State>& trajVec, CGeoPoint start, CGeoPoint end, vector<Obstacle> obs);
+    pair<Obstacle> getMainObstacle(State current);
+    CVector calcFrontForce(State front, State current);
+    CVector calcBackForce(State current, State back);
+    CVector calcObstacleForce(State current, Obstacle obs);
+private:
+    vector<Obstacle> obs_;
 };
 
 #endif // TEBPLANNER_H
