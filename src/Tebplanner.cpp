@@ -1,4 +1,6 @@
 #include "Tebplanner.h"
+#include "Utils.h"
+#include <QDebug>
 
 TEBPlanner::TEBPlanner() {
 
@@ -12,17 +14,23 @@ TEBPlanner::TEBPlanner(vector<State> &trajVec, CGeoPoint start, CGeoPoint end, v
 void TEBPlanner::plan(vector<State> &trajVec, CGeoPoint start, CGeoPoint end) {
     int index = 0;
     while (index < MAX_ITERATION_TIMES) {
+        index++;
 
         // init
 
         CVector totalLoss = CVector(0, 0);
+        double totalLossMod = 0;
         CVector frontLoss, backLoss, leftObstacleLoss, rightObstacleLoss;
 
         // deal with boundary conditions
 
         if (trajVec.empty()) return;
         else if (trajVec.size() == 1) {
-
+            pair<Obstacle, Obstacle> obs = getMainObstacle(trajVec[0]);
+            leftObstacleLoss = calcObstacleForce(trajVec[0], obs.first);
+            rightObstacleLoss = calcObstacleForce(trajVec[0], obs.second);
+            totalLoss = leftObstacleLoss + rightObstacleLoss;
+            return;
         }
 
         // calc the loss for every traj state
@@ -31,7 +39,7 @@ void TEBPlanner::plan(vector<State> &trajVec, CGeoPoint start, CGeoPoint end) {
 
             // decide the main obstacle for this traj state
 
-            pair<Obstacle> obs = getMainObstacle(trajVec[i]);
+            pair<Obstacle, Obstacle> obs = getMainObstacle(trajVec[i]);
 
             // calc losses
 
@@ -52,14 +60,36 @@ void TEBPlanner::plan(vector<State> &trajVec, CGeoPoint start, CGeoPoint end) {
 
             // make decisions based on different conditions
 
-            totalLoss += frontLoss + backLoss + leftObstacleLoss + rightObstacleLoss;
+            totalLoss = totalLoss + frontLoss + backLoss + leftObstacleLoss + rightObstacleLoss;
             totalLossMod = totalLoss.mod();
         }
     }
 }
 
-pair<Obstacle> TEBPlanner::getMainObstacle(State current) {
-
+pair<Obstacle, Obstacle> TEBPlanner::getMainObstacle(State current) {
+    Obstacle leftObs, rightObs;
+    double leftObsDist = MIN_OBSTACLE_DISTANCE, rightObsDist = MIN_OBSTACLE_DISTANCE;
+    bool leftObsFlag = false, rightObsFlag = false;
+    for (Obstacle obs : obs_) {
+        if (normalize(current.dir() - (obs.pos() - current.pos()).dir()) > 0) { // obstacle is on the left
+            if ((obs.pos() - current.pos()).mod() < leftObsDist) {
+                leftObs = obs;
+                leftObsFlag = true;
+                leftObsDist = (obs.pos() - current.pos()).mod();
+            }
+        }
+        else { // obstacle is on the right
+            if ((obs.pos() - current.pos()).mod() < rightObsDist) {
+                rightObs = obs;
+                rightObsFlag = true;
+                rightObsDist = (obs.pos() - current.pos()).mod();
+            }
+        }
+    }
+    pair<Obstacle, Obstacle> mainObstacle(Obstacle(-9999, -9999), Obstacle(-9999, -9999));
+    if (leftObsFlag) mainObstacle.first = leftObs;
+    if (rightObsFlag) mainObstacle.second = rightObs;
+    return mainObstacle;
 }
 
 CVector TEBPlanner::calcFrontForce(State front, State current) {
@@ -71,5 +101,6 @@ CVector TEBPlanner::calcBackForce(State current, State back) {
 }
 
 CVector TEBPlanner::calcObstacleForce(State current, Obstacle obs) {
+    if (obs.pos() == CGeoPoint(-9999, -9999)) return CVector(0, 0);
     return CVector(0, 0);
 }

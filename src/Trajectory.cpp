@@ -1,4 +1,5 @@
 #include "Trajectory.h"
+#include "Tebplanner.h"
 
 Trajectory::Trajectory() {
 
@@ -16,6 +17,7 @@ void Trajectory::plan(CGeoPoint start, CGeoPoint end, vector<Obstacle> obs) {
         State tempState(start + length * i);
         trajVec.push_back(tempState);
     }
+    TEBPlanner tebPlanner(trajVec, start, end, obs);
 }
 
 void Trajectory::setTrajectoryMethod(int method) {
