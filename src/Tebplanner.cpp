@@ -60,8 +60,14 @@ void TEBPlanner::plan(vector<State> &trajVec, CGeoPoint start, CGeoPoint end) {
 
             // make decisions based on different conditions
 
-            totalLoss = totalLoss + frontLoss + backLoss + leftObstacleLoss + rightObstacleLoss;
+            totalLoss = frontLoss + backLoss + leftObstacleLoss + rightObstacleLoss;
             totalLossMod = totalLoss.mod();
+
+            if (totalLossMod > 1) {
+                double changeMod = 10 / (1 + exp(-totalLossMod));
+                double changeDir = totalLoss.dir();
+                trajVec[i].setPos(trajVec[i].pos() + polar2Vector(changeMod, changeDir));
+            }
         }
     }
 }
@@ -102,5 +108,9 @@ CVector TEBPlanner::calcBackForce(State current, State back) {
 
 CVector TEBPlanner::calcObstacleForce(State current, Obstacle obs) {
     if (obs.pos() == CGeoPoint(-9999, -9999)) return CVector(0, 0);
-    return CVector(0, 0);
+    else {
+        double forceMod = 100 / exp((current.pos() - obs.pos()).mod() - 2 * OBSTACLE_RADIUS);
+        double forceDir = (current.pos() - obs.pos()).dir();
+        return polar2Vector(forceMod, forceDir);
+    }
 }

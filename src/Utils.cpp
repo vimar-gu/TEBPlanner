@@ -10,3 +10,7 @@ double normalize(double x) {
     }
     return x;
 }
+
+CVector polar2Vector(double mod, double dir) {
+    return CVector(mod * cos(dir), mod * sin(dir));
+}
