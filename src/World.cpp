@@ -15,7 +15,7 @@ CWorld::CWorld() {
         Obstacle obs(ORIGIN_X, ORIGIN_Y + i * 50);
         obsVec.push_back(obs);
     }
-    target.setPos(CGeoPoint(200, 200));
+    target.setPos(CGeoPoint(ORIGIN_X + 200, ORIGIN_Y + 200));
 }
 
 // connected to the start button on the board

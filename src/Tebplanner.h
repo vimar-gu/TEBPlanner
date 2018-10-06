@@ -13,8 +13,11 @@ public:
     TEBPlanner(vector<State>& trajVec, CGeoPoint start, CGeoPoint end, vector<Obstacle> obs);
     void plan(vector<State>& trajVec, CGeoPoint start, CGeoPoint end);
     pair<Obstacle, Obstacle> getMainObstacle(State current);
-    CVector calcFrontForce(State front, State current);
-    CVector calcBackForce(State current, State back);
+    CVector calcVelocityForce(State front, State current);
+    CVector calcVelocityEndForce(State current, State end);
+    CVector calcAccelerationForce(State front, State current, State next);
+    CVector calcAccelerationStartForce(State start, State current);
+    CVector calcAccelerationEndForce(State current, State end);
     CVector calcObstacleForce(State current, Obstacle obs);
 private:
     vector<Obstacle> obs_;

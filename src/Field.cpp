@@ -128,11 +128,13 @@ void Field::middleReleaseEvent(QMouseEvent *e) {
     }
 }
 
-void Field::paintRobot(const QColor &color, qreal x, qreal y) {
+void Field::paintRobot(const QColor &robotColor, const QColor &dirColor, qreal x, qreal y, qreal dir) {
     static float radius = OBSTACLE_RADIUS;
-    pixmapPainter.setBrush(QBrush(color));
+    pixmapPainter.setBrush(QBrush(robotColor));
     pixmapPainter.setPen(Qt::NoPen);
     pixmapPainter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius);
+    pixmapPainter.setPen(QPen(dirColor, 2));
+    pixmapPainter.drawLine(QPointF(x, y), QPointF(x - 2 * radius * sin(dir), y - 2 * radius * cos(dir)));
 }
 
 void Field::paintObstacle(const QColor &color, qreal x, qreal y) {
@@ -161,7 +163,7 @@ void Field::paintTraj(const QColor &color, qreal x, qreal y) {
 
 void Field::fillField() {
     for (auto robot : World::instance()->robotVec) {
-        paintRobot(COLOR_YELLOW, robot.pos().x(), robot.pos().y());
+        paintRobot(COLOR_YELLOW, COLOR_DARK_ORANGE, robot.pos().x(), robot.pos().y(), robot.dir());
     }
     for (auto obs : World::instance()->obsVec) {
         paintObstacle(COLOR_PINK, obs.pos().x(), obs.pos().y());
