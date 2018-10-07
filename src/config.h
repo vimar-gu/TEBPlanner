@@ -13,7 +13,7 @@ const double FRAME_NUMBER = 60;
 
 // the const parameters for trajectory planning
 
-const int TRAJ_POINT_NUMBER = 10; // the number of origin trajectory points
+const int TRAJ_POINT_NUMBER = 2; // the number of origin trajectory points
 const int MAX_ITERATION_TIMES = 10; // the max number of iteration times for optimization
 
 // the const parameters of robot moving constraints
