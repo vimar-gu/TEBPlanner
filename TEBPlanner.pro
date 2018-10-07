@@ -18,7 +18,8 @@ SOURCES += \
     src/Interaction.cpp \
     src/Model.cpp \
     src/World.cpp \
-    src/Trajectory.cpp
+    src/Trajectory.cpp \
+    src/config.cpp
 
 RESOURCES += qml.qrc
 

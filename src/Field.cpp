@@ -82,7 +82,7 @@ void Field::resetAfterMouseEvent(){
 // used to catch the object the mouse is pointing at
 
 void Field::checkClosestRobot(double x, double y){
-    double limit = OBSTACLE_RADIUS;
+    double limit = Config::FieldConfig::OBSTACLE_RADIUS;
     pressedRobot = false;
     for (auto& obs : World::instance()->obsVec) {
         if (obs.pos().dist(CGeoPoint(x, y)) < limit) {
@@ -129,28 +129,28 @@ void Field::middleReleaseEvent(QMouseEvent *e) {
 }
 
 void Field::paintRobot(const QColor &color, qreal x, qreal y) {
-    static float radius = OBSTACLE_RADIUS;
+    static float radius = Config::FieldConfig::OBSTACLE_RADIUS;
     pixmapPainter.setBrush(QBrush(color));
     pixmapPainter.setPen(Qt::NoPen);
     pixmapPainter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius);
 }
 
 void Field::paintObstacle(const QColor &color, qreal x, qreal y) {
-    static float radius = OBSTACLE_RADIUS;
+    static float radius = Config::FieldConfig::OBSTACLE_RADIUS;
     pixmapPainter.setBrush(QBrush(color));
     pixmapPainter.setPen(Qt::NoPen);
     pixmapPainter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius);
 }
 
 void Field::paintTarget(const QColor &color, qreal x, qreal y) {
-    static float radius = OBSTACLE_RADIUS;
+    static float radius = Config::FieldConfig::OBSTACLE_RADIUS;
     pixmapPainter.setBrush(QBrush(color));
     pixmapPainter.setPen(Qt::NoPen);
     pixmapPainter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius);
 }
 
 void Field::paintTraj(const QColor &color, qreal x, qreal y) {
-    static float radius = OBSTACLE_RADIUS / 2;
+    static float radius = Config::FieldConfig::OBSTACLE_RADIUS / 2;
     pixmapPainter.setBrush(QBrush(Qt::NoBrush));
     pixmapPainter.setPen(QPen(color, 2));
     pixmapPainter.drawLine(QPointF(x - radius, y - radius), QPointF(x + radius, y + radius));
