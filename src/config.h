@@ -3,28 +3,28 @@
 
 // the const parameters for field painting
 
-const int ROBOT_NUMBER = 1; // the number of our robots
-const int OBSTACLE_NUMBER = 2; // the number of obstacles
-const double ORIGIN_X = 100; // the offset for init
-const double ORIGIN_Y = 100; // the offset for init
-const double OBSTACLE_RADIUS = 10; // the size of obstacles .. wait to be modified to various ones
-const double PI = 3.14159265358979323846;
-const double FRAME_NUMBER = 60;
+extern int ROBOT_NUMBER; // the number of our robots
+extern int OBSTACLE_NUMBER; // the number of obstacles
+extern double ORIGIN_X; // the offset for init
+extern double ORIGIN_Y; // the offset for init
+extern double OBSTACLE_RADIUS; // the size of obstacles .. wait to be modified to various ones
+extern double PI;
+extern double FRAME_NUMBER;
 
 // the const parameters for trajectory planning
 
-const int TRAJ_POINT_NUMBER = 2; // the number of origin trajectory points
-const int MAX_ITERATION_TIMES = 10; // the max number of iteration times for optimization
+extern int TRAJ_POINT_NUMBER; // the number of origin trajectory points
+extern int MAX_ITERATION_TIMES; // the max number of iteration times for optimization
 
 // the const parameters of robot moving constraints
 
-const double MAX_VELOCITY = 1000;
-const double MAX_ACCELERATION = 1000;
-const double MAX_ROTATION_VELOCITY = 15;
-const double MAX_ROTATION_ACCELERATION = 15;
+extern double MAX_VELOCITY;
+extern double MAX_ACCELERATION;
+extern double MAX_ROTATION_VELOCITY;
+extern double MAX_ROTATION_ACCELERATION;
 
 // the const parameters for obstacle avoiding
 
-const double MIN_OBSTACLE_DISTANCE = 100;
+extern double MIN_OBSTACLE_DISTANCE;
 
 #endif // CONFIG_H

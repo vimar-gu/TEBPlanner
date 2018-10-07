@@ -20,7 +20,8 @@ SOURCES += \
     src/World.cpp \
     src/Trajectory.cpp \
     src/Tebplanner.cpp \
-    src/Utils.cpp
+    src/Utils.cpp \
+    src/config.cpp
 
 RESOURCES += qml.qrc
 
