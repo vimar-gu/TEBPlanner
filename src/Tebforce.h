@@ -24,8 +24,11 @@ public:
         params_[i] = value;
     }
     virtual CVector calcForce() = 0;
+    double ReLU(double x) { return max(x, 0); }
 private:
     vector<State*> params_;
+    double forceMod_;
+    double forceDir_;
 };
 
 class VelocityForce : public TEBForce {
@@ -36,10 +39,41 @@ public:
         CGeoPoint currentPos = params_[1]->pos();
         CVector currentVel = (frontPos - currentPos) * FRAME_NUMBER;
 
-        double forceMod = max(currentVel.mod() - MAX_VELOCITY, 0);
-        double forceDir = (frontPos - currentPos).dir();
-        return polar2Vector(forceMod, forceDir);
+        forceMod_ = ReLU(currentVel.mod() - MAX_VELOCITY);
+        forceDir_ = (frontPos - currentPos).dir();
+        return polar2Vector(forceMod_, forceDir_);
     }
-}
+};
+
+class AccelerationForce : public TEBForce {
+public:
+    AccelerationForce() { this->resize(3); }
+    CVector calcForce() {
+        CGeoPoint frontPos = params_[0]->pos();
+        CGeoPoint currentPos = params_[1]->pos();
+        CGeoPoint backPos = params_[2]->pos();
+        CVector frontVel = (currentPos - frontPos) * FRAME_NUMBER;
+        CVector backVel = (backPos - currentPos) * FRAME_NUMBER;
+        CVector currentAcc = (backVel - frontVel) * FRAME_NUMBER;
+
+        forceMod_ = ReLU(currentAcc.mod() - MAX_ACCELERATION);
+        forceDir_ = (frontPos - currentPos).dir();
+        return polar2Vector(forceMod_, forceDir_);
+    }
+};
+
+class ObstacleForce : public TEBForce {
+public:
+    ObstacleForce() { this->resize(2); }
+    CVector calcForce() {
+        CGeoPoint obsPos = params_[0]->pos();
+        CGeoPoint currentPos = params_[1]->pos();
+        CVector fromObsVec = currentPos - obsPos;
+
+        forceMod_ = ReLU(MIN_OBSTACLE_DISTANCE - fromObsVec.mod());
+        forceDir_ = fromObsVec.dir();
+        return polar2Vector(forceMod_, forceDir_);
+    }
+};
 
 #endif // TEBFORCE_H

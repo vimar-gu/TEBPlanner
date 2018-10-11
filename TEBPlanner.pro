@@ -21,7 +21,8 @@ SOURCES += \
     src/Trajectory.cpp \
     src/Tebplanner.cpp \
     src/Utils.cpp \
-    src/config.cpp
+    src/config.cpp \
+    src/Optimizer.cpp
 
 RESOURCES += qml.qrc
 
@@ -46,4 +47,5 @@ HEADERS += \
     src/config.h \
     src/Tebplanner.h \
     src/Utils.h \
-    src/Tebforce.h
+    src/Tebforce.h \
+    src/Optimizer.h
