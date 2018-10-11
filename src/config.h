@@ -14,10 +14,10 @@ extern double FRAME_NUMBER;
 // the const parameters for trajectory planning
 
 extern int TRAJ_POINT_NUMBER; // the number of origin trajectory points
-extern int MAX_ITERATION_TIMES; // the max number of iteration times for optimization
+extern int OUTER_ITERATION_TIMES; // the iteration times for outer loops
+extern int INNER_ITERATION_TIMES; // the iteration times for inner optimization
 
 // the const parameters of robot moving constraints
-
 extern double MAX_VELOCITY;
 extern double MAX_ACCELERATION;
 extern double MAX_ROTATION_VELOCITY;

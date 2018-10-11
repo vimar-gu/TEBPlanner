@@ -13,7 +13,7 @@ TEBPlanner::TEBPlanner(vector<State> &trajVec, CGeoPoint start, CGeoPoint end, v
 
 void TEBPlanner::plan(vector<State> &trajVec, CGeoPoint start, CGeoPoint end) {
     int index = 0;
-    while (index < MAX_ITERATION_TIMES) {
+    while (index < OUTER_ITERATION_TIMES) {
         index++;
 
         // init
@@ -64,9 +64,10 @@ void TEBPlanner::plan(vector<State> &trajVec, CGeoPoint start, CGeoPoint end) {
             totalLossMod = totalLoss.mod();
 
             if (totalLossMod > 1) {
-                double changeMod = 10 * tanh(totalLossMod / 10);
+                double changeMod = tanh((totalLossMod - 10) / 10);
                 double changeDir = totalLoss.dir();
-                qDebug() << i << velocityLoss.mod() << accelerationLoss.mod() << leftObstacleLoss.mod() << rightObstacleLoss.mod() << changeMod;
+                if (i == 0) qDebug() << i << velocityLoss.mod() << accelerationLoss.mod() << changeDir << changeMod;
+//                qDebug() << i << velocityLoss.mod() << accelerationLoss.mod() << leftObstacleLoss.mod() << rightObstacleLoss.mod() << changeMod;
                 trajVec[i].setPos(trajVec[i].pos() + polar2Vector(changeMod, changeDir));
             }
         }
@@ -126,7 +127,7 @@ CVector TEBPlanner::calcAccelerationForce(State front, State current, State next
 CVector TEBPlanner::calcAccelerationStartForce(State start, State current) {
     CVector frontVel = start.vel();
     CVector nextVel = (current.pos() - start.pos()) * FRAME_NUMBER;
-    CVector currentAcc = (nextVel - frontVel) * FRAME_NUMBER * 2;
+    CVector currentAcc = (nextVel - frontVel) * FRAME_NUMBER;
     double forceMod = currentAcc.mod() > MAX_ACCELERATION ? currentAcc.mod() - MAX_ACCELERATION : 0;
     double forceDir = (start.pos() - current.pos()).dir();
     return polar2Vector(fabs(forceMod) / 1000, forceDir);

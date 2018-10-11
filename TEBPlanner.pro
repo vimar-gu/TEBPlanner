@@ -45,4 +45,5 @@ HEADERS += \
     src/Trajectory.h \
     src/config.h \
     src/Tebplanner.h \
-    src/Utils.h
+    src/Utils.h \
+    src/Tebforce.h
