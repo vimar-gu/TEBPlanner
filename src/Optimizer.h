@@ -5,11 +5,12 @@
 
 class Optimizer {
 public:
-    Optimizer(State* s) : current(s) {}
+    Optimizer() {}
     void addForce(TEBForce force) {
         forces_.push_back(force);
     }
     void optimize(int innerLoop);
+    void clear() { vector<TEBForce>().swap(forces_); }
 private:
     vector<TEBForce> forces_;
     State* current;

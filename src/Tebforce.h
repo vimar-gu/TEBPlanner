@@ -12,7 +12,7 @@ class TEBForce {
 public:
     TEBForce() {}
     virtual ~TEBForce() {
-        vector<CVector>().swap(params_);
+        vector<State*>().swap(params_);
     }
     void resize(int n) {
         params_.resize(n);
@@ -23,9 +23,9 @@ public:
     void setParam(int i, State* value) {
         params_[i] = value;
     }
-    virtual CVector calcForce() = 0;
-    double ReLU(double x) { return max(x, 0); }
-private:
+    virtual CVector calcForce() { return CVector(); }
+    double ReLU(double x) { return max(x, 0.0); }
+public:
     vector<State*> params_;
     double forceMod_;
     double forceDir_;
