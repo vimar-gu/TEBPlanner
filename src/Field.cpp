@@ -1,4 +1,4 @@
-#include <QDebug>
+﻿#include <QDebug>
 #include "field.h"
 #include "config.h"
 

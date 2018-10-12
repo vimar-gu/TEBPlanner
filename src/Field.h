@@ -1,10 +1,11 @@
-#ifndef FIELD_H
+﻿#ifndef FIELD_H
 #define FIELD_H
 #include <QQuickPaintedItem>
 #include <QPainter>
 #include <QPainterPath>
 #include <QImage>
 #include "World.h"
+#include "config.h"
 
 class Field : public QQuickPaintedItem {
     Q_OBJECT
