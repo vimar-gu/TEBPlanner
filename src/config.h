@@ -1,27 +1,36 @@
 ﻿#ifndef CONFIG_H
 #define CONFIG_H
 
-// the parameters for trajectory algorithm
+// #define WIDTH  720
+// #define HEIGHT  720
+// #define rrtStepSize 10
+// #define acceptRadius 5
+// #define GOAL_RATE 50
 
-//const int ROBOT_NUMBER = 1; // the number of our robots
-//const int OBSTACLE_NUMBER = 10; // the number of obstacles
-//const int TRAJ_POINT_NUMBER = 10; // the origin number of trajectory points
-//const double ORIGIN_X = 0; // the x offset
-//const double ORIGIN_Y = 0; // the y offset
-//const double OBSTACLE_RADIUS = 10; // the size of obstacles .. wait to be modified to various ones
-//const double ROBOT_RADIUS = 10;
+// the const parameters for field painting
 
-#define ROBOT_NUMBER 1
-#define OBSTACLE_NUMBER  10
-#define TRAJ_POINT_NUMBER  10
-#define ORIGIN_X  0
-#define ORIGIN_Y  0
-#define OBSTACLE_RADIUS  10
-#define ROBOT_RADIUS  10
-#define WIDTH  720
-#define HEIGHT  720
-#define rrtStepSize 10
-#define acceptRadius 5
-#define GOAL_RATE 50
+extern int ROBOT_NUMBER; // the number of our robots
+extern int OBSTACLE_NUMBER; // the number of obstacles
+extern double ORIGIN_X; // the offset for init
+extern double ORIGIN_Y; // the offset for init
+extern double OBSTACLE_RADIUS; // the size of obstacles .. wait to be modified to various ones
+extern double PI;
+extern double FRAME_NUMBER;
+
+// the const parameters for trajectory planning
+
+extern int TRAJ_POINT_NUMBER; // the number of origin trajectory points
+extern int MAX_ITERATION_TIMES; // the max number of iteration times for optimization
+
+// the const parameters of robot moving constraints
+
+extern double MAX_VELOCITY;
+extern double MAX_ACCELERATION;
+extern double MAX_ROTATION_VELOCITY;
+extern double MAX_ROTATION_ACCELERATION;
+
+// the const parameters for obstacle avoiding
+
+extern double MIN_OBSTACLE_DISTANCE;
 
 #endif // CONFIG_H

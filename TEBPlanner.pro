@@ -19,7 +19,9 @@ SOURCES += \
     src/Model.cpp \
     src/World.cpp \
     src/Trajectory.cpp \
-    src/rrtTree.cpp
+    src/rrtTree.cpp \
+    src/config.cpp
+
 
 RESOURCES += qml.qrc
 
