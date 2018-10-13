@@ -1,11 +1,12 @@
 ﻿#ifndef CONFIG_H
 #define CONFIG_H
 
-// #define WIDTH  720
-// #define HEIGHT  720
-// #define rrtStepSize 10
-// #define acceptRadius 5
-// #define GOAL_RATE 50
+ #define WIDTH  720
+ #define HEIGHT  720
+ #define rrtStepSize 10
+ #define acceptRadius 5
+ #define GOAL_RATE 50
+ #define ROBOT_RADIUS 10
 
 // the const parameters for field painting
 
