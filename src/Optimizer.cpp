@@ -1,4 +1,5 @@
 #include "Optimizer.h"
+#include <QDebug>
 
 void Optimizer::init() {
 
@@ -14,8 +15,10 @@ void Optimizer::optimize(int innerLoop) {
     while (index < innerLoop) {
         index++;
 
-        for (TEBForce& force : forces_) {
-            CVector forceVec = force.calcForce();
+        CVector totalForce(0, 0);
+        for (TEBForce* force : forces_) {
+            totalForce = totalForce + force->calcForce();
         }
+//        qDebug() << totalForce.mod();
     }
 }

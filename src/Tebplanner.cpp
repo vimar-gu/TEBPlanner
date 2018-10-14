@@ -22,8 +22,8 @@ void TEBPlanner::plan() {
             optim_.init();
 
             pair<Obstacle, Obstacle> mainObstacles = getMainObstacle(trajVec_[i]);
-            Obstacle* leftObstacle = &mainObstacles.first;
-            Obstacle* rightObstacle = &mainObstacles.second;
+            Obstacle leftObstacle = mainObstacles.first;
+            Obstacle rightObstacle = mainObstacles.second;
 
             // start of the trajectory vector
 
@@ -42,8 +42,8 @@ void TEBPlanner::plan() {
             else {
                 addVelocityForce(trajVec_[i - 1], trajVec_[i]);
                 addAccelerationForce(trajVec_[i - 1], trajVec_[i], trajVec_[i + 1]);
-                addObstacleForce(leftObstacle, trajVec_[i]);
-                addObstacleForce(rightObstacle, trajVec_[i]);
+                addObstacleForce(&leftObstacle, trajVec_[i]);
+                addObstacleForce(&rightObstacle, trajVec_[i]);
             }
 
             // do the optimization
@@ -59,38 +59,38 @@ void TEBPlanner::initOptimize() {
 }
 
 void TEBPlanner::addVelocityForce(State *frontState, State *currentState) {
-    VelocityForce force;
-    force.setParam(0, frontState);
-    force.setParam(1, currentState);
+    VelocityForce* force = new VelocityForce();
+    force->setParam(0, frontState);
+    force->setParam(1, currentState);
     optim_.addForce(force);
 }
 
 void TEBPlanner::addAccelerationForce(State *frontState, State *currentState, State *backState) {
-    AccelerationForce force;
-    force.setParam(0, frontState);
-    force.setParam(1, currentState);
-    force.setParam(2, backState);
+    AccelerationForce* force = new AccelerationForce();
+    force->setParam(0, frontState);
+    force->setParam(1, currentState);
+    force->setParam(2, backState);
     optim_.addForce(force);
 }
 
 void TEBPlanner::addAccelerationStartForce(State *currentState) {
-    AccelerationStartForce force;
-    force.setParam(0, &start_);
-    force.setParam(1, currentState);
+    AccelerationStartForce* force = new AccelerationStartForce();
+    force->setParam(0, &start_);
+    force->setParam(1, currentState);
     optim_.addForce(force);
 }
 
 void TEBPlanner::addAccelerationEndForce(State *currentState) {
-    AccelerationEndForce force;
-    force.setParam(0, currentState);
-    force.setParam(1, &end_);
+    AccelerationEndForce* force = new AccelerationEndForce();
+    force->setParam(0, currentState);
+    force->setParam(1, &end_);
     optim_.addForce(force);
 }
 
 void TEBPlanner::addObstacleForce(State *obstacleState, State *currentState) {
-    ObstacleForce force;
-    force.setParam(0, obstacleState);
-    force.setParam(1, currentState);
+    ObstacleForce* force = new ObstacleForce();
+    force->setParam(0, obstacleState);
+    force->setParam(1, currentState);
     optim_.addForce(force);
 }
 
@@ -98,6 +98,7 @@ pair<Obstacle, Obstacle> TEBPlanner::getMainObstacle(State* current) {
     Obstacle leftObs, rightObs;
     double leftObsDist = MIN_OBSTACLE_DISTANCE, rightObsDist = MIN_OBSTACLE_DISTANCE;
     bool leftObsFlag = false, rightObsFlag = false;
+    int i = 0;
     for (Obstacle obs : obs_) {
         if (normalize(current->dir() - (obs.pos() - current->pos()).dir()) > 0) { // obstacle is on the left
             if ((obs.pos() - current->pos()).mod() < leftObsDist) {

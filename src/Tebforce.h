@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <QDebug>
 #include "Model.h"
 #include "config.h"
 #include "Utils.h"
@@ -11,9 +12,6 @@ using namespace std;
 class TEBForce {
 public:
     TEBForce() {}
-    virtual ~TEBForce() {
-        vector<State*>().swap(params_);
-    }
     void resize(int n) {
         params_.resize(n);
         for (auto& param : params_) {
@@ -24,6 +22,7 @@ public:
         params_[i] = value;
     }
     virtual CVector calcForce() { return CVector(); }
+    virtual void toStream() { qDebug() << "TEBForce"; }
     double ReLU(double x) { return max(x, 0.0); }
 public:
     vector<State*> params_;
@@ -43,6 +42,7 @@ public:
         forceDir_ = (frontPos - currentPos).dir();
         return polar2Vector(forceMod_, forceDir_);
     }
+    void toStream() { qDebug() << "VelocityForce"; }
 };
 
 class AccelerationForce : public TEBForce {
@@ -60,6 +60,7 @@ public:
         forceDir_ = (frontPos - currentPos).dir();
         return polar2Vector(forceMod_, forceDir_);
     }
+    void toStream() { qDebug() << "AccelerationForce"; }
 };
 
 class AccelerationStartForce : public TEBForce {
@@ -76,6 +77,7 @@ public:
         forceDir_ = (startPos - currentPos).dir();
         return polar2Vector(forceMod_, forceDir_);
     }
+    void toStream() { qDebug() << "AccelerationStartForce"; }
 };
 
 class AccelerationEndForce : public TEBForce {
@@ -92,6 +94,7 @@ public:
         forceDir_ = (endPos - currentPos).dir();
         return polar2Vector(forceMod_, forceDir_);
     }
+    void toStream() { qDebug() << "AccelerationEndForce"; }
 };
 
 class ObstacleForce : public TEBForce {
@@ -106,6 +109,7 @@ public:
         forceDir_ = fromObsVec.dir();
         return polar2Vector(forceMod_, forceDir_);
     }
+    void toStream() { qDebug() << "ObstacleForce"; }
 };
 
 #endif // TEBFORCE_H
