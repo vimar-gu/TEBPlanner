@@ -62,6 +62,38 @@ public:
     }
 };
 
+class AccelerationStartForce : public TEBForce {
+public:
+    AccelerationStartForce() { this->resize(2); }
+    CVector calcForce() {
+        CVector startVel = params_[0]->vel();
+        CGeoPoint startPos = params_[0]->pos();
+        CGeoPoint currentPos = params_[1]->pos();
+        CVector currentVel = (currentPos - startPos) * FRAME_NUMBER;
+        CVector currentAcc = (currentVel - startVel) * FRAME_NUMBER * 2;
+
+        forceMod_ = ReLU(currentAcc.mod() - MAX_ACCELERATION);
+        forceDir_ = (startPos - currentPos).dir();
+        return polar2Vector(forceMod_, forceDir_);
+    }
+};
+
+class AccelerationEndForce : public TEBForce {
+public:
+    AccelerationEndForce() { this->resize(2); }
+    CVector calcForce() {
+        CGeoPoint currentPos = params_[0]->pos();
+        CVector endVel = params_[1]->vel();
+        CGeoPoint endPos = params_[1]->pos();
+        CVector currentVel = (endPos - currentPos) * FRAME_NUMBER;
+        CVector currentAcc = (endVel - currentVel) * FRAME_NUMBER * 2;
+
+        forceMod_ = ReLU(currentAcc.mod() - MAX_ACCELERATION);
+        forceDir_ = (endPos - currentPos).dir();
+        return polar2Vector(forceMod_, forceDir_);
+    }
+};
+
 class ObstacleForce : public TEBForce {
 public:
     ObstacleForce() { this->resize(2); }

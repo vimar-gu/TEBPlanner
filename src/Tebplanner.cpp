@@ -19,6 +19,12 @@ void TEBPlanner::plan() {
 
         for (int i = 0; i < trajVec_.size(); i++) {
 
+            optim_.init();
+
+            pair<Obstacle, Obstacle> mainObstacles = getMainObstacle(trajVec_[i]);
+            Obstacle* leftObstacle = &mainObstacles.first;
+            Obstacle* rightObstacle = &mainObstacles.second;
+
             // start of the trajectory vector
 
             if (i == 0) {
@@ -34,26 +40,21 @@ void TEBPlanner::plan() {
             // default condition
 
             else {
-
+                addVelocityForce(trajVec_[i - 1], trajVec_[i]);
+                addAccelerationForce(trajVec_[i - 1], trajVec_[i], trajVec_[i + 1]);
+                addObstacleForce(leftObstacle, trajVec_[i]);
+                addObstacleForce(rightObstacle, trajVec_[i]);
             }
 
             // do the optimization
 
-            optimizeState();
-            clear();
+            optim_.optimize(INNER_ITERATION_TIMES);
+            optim_.clear();
         }
     }
 }
 
 void TEBPlanner::initOptimize() {
-
-}
-
-void TEBPlanner::optimizeState() {
-
-}
-
-void TEBPlanner::clear() {
 
 }
 
@@ -69,6 +70,20 @@ void TEBPlanner::addAccelerationForce(State *frontState, State *currentState, St
     force.setParam(0, frontState);
     force.setParam(1, currentState);
     force.setParam(2, backState);
+    optim_.addForce(force);
+}
+
+void TEBPlanner::addAccelerationStartForce(State *currentState) {
+    AccelerationStartForce force;
+    force.setParam(0, &start_);
+    force.setParam(1, currentState);
+    optim_.addForce(force);
+}
+
+void TEBPlanner::addAccelerationEndForce(State *currentState) {
+    AccelerationEndForce force;
+    force.setParam(0, currentState);
+    force.setParam(1, &end_);
     optim_.addForce(force);
 }
 

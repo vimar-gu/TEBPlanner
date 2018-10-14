@@ -14,11 +14,11 @@ public:
         trajVec_(trajVec), start_(start), end_(end), obs_(obs) {}
     void plan();
     void initOptimize();
-    void optimizeState();
-    void clear();
 
     void addVelocityForce(State* frontState, State* currentState);
     void addAccelerationForce(State* frontState, State* currentState, State* backState);
+    void addAccelerationStartForce(State* currentState);
+    void addAccelerationEndForce(State *currentState);
     void addObstacleForce(State* obstacleState, State* currentState);
 
     pair<Obstacle, Obstacle> getMainObstacle(State* current);
