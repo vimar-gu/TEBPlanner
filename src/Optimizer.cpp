@@ -6,7 +6,10 @@ void Optimizer::init() {
 }
 
 void Optimizer::prune() {
-
+    CVector finalForce(0, 0);
+    for (TEBForce* force : forces_) {
+        finalForce = finalForce + force->calcForce();
+    }
 }
 
 void Optimizer::optimize(int innerLoop) {
