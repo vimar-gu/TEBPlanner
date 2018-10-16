@@ -3,7 +3,7 @@
 #include <QDebug>
 
 
-void TEBPlanner::plan() {
+void TEBPlanner::plan(vector<State*>& trajVec) {
 
     // initiate
 
@@ -15,13 +15,13 @@ void TEBPlanner::plan() {
 
         // boundary conditions
 
-        if (trajVec_.size() == 0) return;
+        if (trajVec.size() == 0) return;
 
-        for (int i = 0; i < trajVec_.size(); i++) {
+        for (size_t i = 0; i < trajVec.size(); i++) {
 
             optim_.init();
 
-            pair<Obstacle, Obstacle> mainObstacles = getMainObstacle(trajVec_[i]);
+            pair<Obstacle, Obstacle> mainObstacles = getMainObstacle(trajVec[i]);
             Obstacle leftObstacle = mainObstacles.first;
             Obstacle rightObstacle = mainObstacles.second;
 
@@ -33,17 +33,22 @@ void TEBPlanner::plan() {
 
             // end of the trajectory vector
 
-            else if (i == trajVec_.size() - 1) {
+            else if (i == trajVec.size() - 1) {
+                addVelocityEndForce(trajVec[i - 1], trajVec[i]);
+                addAccelerationEndForce(trajVec[i]);
+                addObstacleForce(&leftObstacle, trajVec[i]);
+                addObstacleForce(&rightObstacle, trajVec[i]);
 
+                prune(trajVec);
             }
 
             // default condition
 
             else {
-                addVelocityForce(trajVec_[i - 1], trajVec_[i]);
-                addAccelerationForce(trajVec_[i - 1], trajVec_[i], trajVec_[i + 1]);
-                addObstacleForce(&leftObstacle, trajVec_[i]);
-                addObstacleForce(&rightObstacle, trajVec_[i]);
+                addVelocityForce(trajVec[i - 1], trajVec[i]);
+                addAccelerationForce(trajVec[i - 1], trajVec[i], trajVec[i + 1]);
+                addObstacleForce(&leftObstacle, trajVec[i]);
+                addObstacleForce(&rightObstacle, trajVec[i]);
             }
 
             // do the optimization
@@ -62,6 +67,13 @@ void TEBPlanner::addVelocityForce(State *frontState, State *currentState) {
     VelocityForce* force = new VelocityForce();
     force->setParam(0, frontState);
     force->setParam(1, currentState);
+    optim_.addForce(force);
+}
+
+void TEBPlanner::addVelocityEndForce(State *currentState, State *endState) {
+    VelocityForce* force = new VelocityForce();
+    force->setParam(0, currentState);
+    force->setParam(1, endState);
     optim_.addForce(force);
 }
 
@@ -94,11 +106,21 @@ void TEBPlanner::addObstacleForce(State *obstacleState, State *currentState) {
     optim_.addForce(force);
 }
 
+
+void TEBPlanner::prune(vector<State*>& trajVec) {
+    CVector totalForce = optim_.calcTotalForce();
+    if (totalForce.mod() > MAX_END_FORCE) { // need to add more trajectory points
+        State* finalState = trajVec[trajVec.size() - 1];
+        State* tempState = new State((finalState->pos().x() + end_.pos().x()) / 2, (finalState->pos().y() + end_.pos().y()) / 2);
+        trajVec.push_back(tempState);
+    }
+}
+
+
 pair<Obstacle, Obstacle> TEBPlanner::getMainObstacle(State* current) {
     Obstacle leftObs, rightObs;
     double leftObsDist = MIN_OBSTACLE_DISTANCE, rightObsDist = MIN_OBSTACLE_DISTANCE;
     bool leftObsFlag = false, rightObsFlag = false;
-    int i = 0;
     for (Obstacle obs : obs_) {
         if (normalize(current->dir() - (obs.pos() - current->pos()).dir()) > 0) { // obstacle is on the left
             if ((obs.pos() - current->pos()).mod() < leftObsDist) {

@@ -10,9 +10,9 @@ public:
         forces_.push_back(force);
     }
     void init();
-    void prune();
     void optimize(int innerLoop);
     void clear() { vector<TEBForce*>().swap(forces_); }
+    CVector calcTotalForce();
 private:
     vector<TEBForce*> forces_;
     State* current;

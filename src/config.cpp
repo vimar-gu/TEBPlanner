@@ -15,6 +15,7 @@ double FRAME_NUMBER = 10;
 int TRAJ_POINT_NUMBER = 10;
 int OUTER_ITERATION_TIMES = 2;
 int INNER_ITERATION_TIMES = 2;
+double MAX_END_FORCE = 100;
 
 // robot config
 

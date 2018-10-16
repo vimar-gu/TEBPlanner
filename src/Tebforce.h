@@ -36,13 +36,28 @@ public:
     CVector calcForce() {
         CGeoPoint frontPos = params_[0]->pos();
         CGeoPoint currentPos = params_[1]->pos();
-        CVector currentVel = (frontPos - currentPos) * FRAME_NUMBER;
+        CVector currentVel = (currentPos - frontPos) * FRAME_NUMBER;
 
         forceMod_ = ReLU(currentVel.mod() - MAX_VELOCITY);
         forceDir_ = (frontPos - currentPos).dir();
         return polar2Vector(forceMod_, forceDir_);
     }
     void toStream() { qDebug() << "VelocityForce"; }
+};
+
+class VelocityEndForce : public TEBForce {
+public:
+    VelocityEndForce() { this->resize(2); }
+    CVector calcForce() {
+        CGeoPoint currentPos = params_[0]->pos();
+        CGeoPoint endPos = params_[1]->pos();
+        CVector currentVel = (endPos - currentPos) * FRAME_NUMBER;
+
+        forceMod_ = ReLU(currentVel.mod() - MAX_VELOCITY);
+        forceDir_ = (endPos - currentPos).dir();
+        return polar2Vector(forceMod_, forceDir_);
+    }
+    void toStream() { qDebug() << "VelocityEndForce"; }
 };
 
 class AccelerationForce : public TEBForce {
