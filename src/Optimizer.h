@@ -10,12 +10,12 @@ public:
         forces_.push_back(force);
     }
     void init();
-    void optimize(int innerLoop);
-    void clear() { vector<TEBForce*>().swap(forces_); }
+    void optimize(int innerLoop, vector<State*>& trajVec, int index);
+    void clear() { forces_.clear(); }
+    double getForcesSize() { return forces_.size(); }
     CVector calcTotalForce();
 private:
     vector<TEBForce*> forces_;
-    State* current;
 };
 
 #endif // OPTIMIZER_H

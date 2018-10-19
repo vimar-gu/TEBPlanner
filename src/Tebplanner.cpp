@@ -28,7 +28,12 @@ void TEBPlanner::plan(vector<State*>& trajVec) {
             // start of the trajectory vector
 
             if (i == 0) {
+//                prune(trajVec);
 
+                addVelocityForce(&start_, trajVec[i]);
+                addAccelerationStartForce(trajVec[i]);
+                addObstacleForce(&leftObstacle, trajVec[i]);
+                addObstacleForce(&rightObstacle, trajVec[i]);
             }
 
             // end of the trajectory vector
@@ -38,8 +43,6 @@ void TEBPlanner::plan(vector<State*>& trajVec) {
                 addAccelerationEndForce(trajVec[i]);
                 addObstacleForce(&leftObstacle, trajVec[i]);
                 addObstacleForce(&rightObstacle, trajVec[i]);
-
-                prune(trajVec);
             }
 
             // default condition
@@ -52,8 +55,9 @@ void TEBPlanner::plan(vector<State*>& trajVec) {
             }
 
             // do the optimization
-
-            optim_.optimize(INNER_ITERATION_TIMES);
+//            if (i == 0) {
+                optim_.optimize(INNER_ITERATION_TIMES, trajVec, i);
+//            }
             optim_.clear();
         }
     }
@@ -108,12 +112,18 @@ void TEBPlanner::addObstacleForce(State *obstacleState, State *currentState) {
 
 
 void TEBPlanner::prune(vector<State*>& trajVec) {
+    int len = trajVec.size() - 1;
+    addVelocityEndForce(trajVec[len - 1], trajVec[len]);
+    addAccelerationEndForce(trajVec[len]);
     CVector totalForce = optim_.calcTotalForce();
+
     if (totalForce.mod() > MAX_END_FORCE) { // need to add more trajectory points
-        State* finalState = trajVec[trajVec.size() - 1];
+        State* finalState = trajVec[len];
         State* tempState = new State((finalState->pos().x() + end_.pos().x()) / 2, (finalState->pos().y() + end_.pos().y()) / 2);
         trajVec.push_back(tempState);
     }
+
+    optim_.clear();
 }
 
 

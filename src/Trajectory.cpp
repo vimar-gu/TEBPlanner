@@ -18,7 +18,6 @@ void Trajectory::plan(State start, State end, vector<Obstacle> obs) {
         trajVec.push_back(tempState);
     }
     TEBPlanner tebPlanner(trajVec, start, end, obs);
-    qDebug() << trajVec.size();
 }
 
 void Trajectory::setTrajectoryMethod(int method) {

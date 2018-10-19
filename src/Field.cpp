@@ -134,7 +134,7 @@ void Field::paintRobot(const QColor &robotColor, const QColor &dirColor, qreal x
     pixmapPainter.setPen(Qt::NoPen);
     pixmapPainter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius);
     pixmapPainter.setPen(QPen(dirColor, 2));
-    pixmapPainter.drawLine(QPointF(x, y), QPointF(x - 2 * radius * sin(dir), y - 2 * radius * cos(dir)));
+    pixmapPainter.drawLine(QPointF(x, y), QPointF(x - 2 * radius * cos(dir), y - 2 * radius * sin(dir)));
 }
 
 void Field::paintObstacle(const QColor &color, qreal x, qreal y) {

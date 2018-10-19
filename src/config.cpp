@@ -13,9 +13,13 @@ double FRAME_NUMBER = 10;
 // trajectory config
 
 int TRAJ_POINT_NUMBER = 10;
-int OUTER_ITERATION_TIMES = 2;
-int INNER_ITERATION_TIMES = 2;
+int OUTER_ITERATION_TIMES = 5;
+int INNER_ITERATION_TIMES = 5;
 double MAX_END_FORCE = 100;
+double ALPHA = 1;
+double BETA_1 = 0.5;
+double BETA_2 = 0.5;
+double EPSILON = 0.01;
 
 // robot config
 
