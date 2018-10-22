@@ -18,7 +18,8 @@ public:
     void clearTraj();
     void plan(CGeoPoint start, CGeoPoint end, vector<Obstacle> obs);
     void setTrajectoryMethod(int method);
-    vector<State> trajVec;
+    State* getFirstState();
+    vector<State*> trajVec;
 private:
     int trajMethod;
 };

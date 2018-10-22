@@ -5,7 +5,7 @@ Trajectory::Trajectory() {
 }
 
 void Trajectory::clearTraj() {
-    vector<State>().swap(trajVec);
+    vector<State*>().swap(trajVec);
 }
 
 void Trajectory::plan(CGeoPoint start, CGeoPoint end, vector<Obstacle> obs) {
@@ -13,9 +13,13 @@ void Trajectory::plan(CGeoPoint start, CGeoPoint end, vector<Obstacle> obs) {
     CVector start2End = end - start;
     CVector length = start2End / (TRAJ_POINT_NUMBER + 1);
     for (int i = 1; i <= TRAJ_POINT_NUMBER; i++) {
-        State tempState(start + length * i);
+        State* tempState = new State(start + length * i);
         trajVec.push_back(tempState);
     }
+}
+
+State* Trajectory::getFirstState() {
+    return trajVec[0];
 }
 
 void Trajectory::setTrajectoryMethod(int method) {

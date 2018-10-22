@@ -36,8 +36,10 @@ void CWorld::fresh() {
 // fresh traj
 
 void CWorld::freshTraj() {
-    for (Robot robot : robotVec) {
+    for (Robot& robot : robotVec) {
         traj.plan(robot.pos(), target.pos(), obsVec);
+        State* nextTraj = traj.getFirstState();
+        robot.setPos(robot.pos() + nextTraj->vel() / 100);
     }
 }
 
