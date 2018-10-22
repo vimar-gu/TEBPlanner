@@ -18,6 +18,7 @@ public:
     void clearTraj();
     void plan(State start, State end, vector<Obstacle> obs);
     void setTrajectoryMethod(int method);
+    State* getFirstState();
     vector<State*> trajVec;
 private:
     int trajMethod;

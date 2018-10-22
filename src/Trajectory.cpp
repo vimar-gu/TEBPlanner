@@ -20,6 +20,10 @@ void Trajectory::plan(State start, State end, vector<Obstacle> obs) {
     TEBPlanner tebPlanner(trajVec, start, end, obs);
 }
 
+State* Trajectory::getFirstState() {
+    return trajVec[0];
+}
+
 void Trajectory::setTrajectoryMethod(int method) {
     trajMethod = method ? TEB : RRT;
 }

@@ -69,8 +69,6 @@ public:
 
 typedef MoveObj Obstacle;
 
-// define robots based on moveobj
-
 typedef MoveObj Robot;
 
 typedef MoveObj State;
