@@ -45,33 +45,27 @@ private:
 struct MoveObj {
 public:
     MoveObj() {}
-    MoveObj(CGeoPoint pos) : _pos(pos) {}
-    MoveObj(double x, double y) : _pos(CGeoPoint(x, y)) {}
+    MoveObj(CGeoPoint pos) : _pos(pos), _vel(CVector(0, 0)), _dir(0), _rotVel(0) {}
+    MoveObj(double x, double y) : _pos(CGeoPoint(x, y)), _vel(CVector(0, 0)), _dir(0), _rotVel(0) {}
     CGeoPoint pos() const { return _pos; }
     CVector vel() const { return _vel; }
-    void setPos(const CGeoPoint& pos) { _pos = CGeoPoint(pos); }
-    void setVel(const CVector& vel) { _vel = CVector(vel); }
-    CGeoPoint _pos;
-    CVector _vel;
-};
-
-typedef MoveObj Obstacle;
-
-class Robot : public MoveObj {
-public:
-    Robot() {}
-    Robot(CGeoPoint p) : MoveObj(p) {}
-    Robot(double x, double y) : MoveObj(CGeoPoint(x, y)) {}
     double dir() const { return _dir; }
     double rotVel() const { return _rotVel; }
+    void setPos(const CGeoPoint& pos) { _pos = CGeoPoint(pos); }
+    void setVel(const CVector& vel) { _vel = CVector(vel); }
     void setDir(const double& dir) { _dir = dir; }
     void setRotVel(const double& rotVel) { _rotVel = rotVel; }
-private:
+    CGeoPoint _pos;
+    CVector _vel;
     double _dir;
     double _rotVel;
 };
 
-typedef Robot State;
+typedef MoveObj Obstacle;
+
+typedef MoveObj Robot;
+
+typedef MoveObj State;
 
 class RoundObstacle : private Obstacle {
 
