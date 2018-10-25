@@ -35,16 +35,17 @@ void rrtTree::addNewNode(rrtTree::rrtNode node)
 {
     rrt_tree.push_back(node);
 }
-vector<int> rrtTree::getPath(int end_id)
-{
-    vector<int> path;
-    path.push_back(end_id);
-    while(rrt_tree[path.front()].ID != 0)
-    {
-        path.insert(path.begin(), rrt_tree[path.front()].parentID);
-    }
-    return path;
-}
+//vector<int> rrtTree::getPath(int end_id)
+//{
+//    vector<int> path;
+//    path.push_back(end_id);
+//    while(rrt_tree[path.front()].ID != 0)
+//    {
+//        while()
+//        path.insert(path.begin(), rrt_tree[path.front()].parentID);
+//    }
+//    return path;
+//}
 int rrtTree::getSize()
 {
     return rrt_tree.size();

@@ -16,7 +16,7 @@ class rrtTree
             int ID;
             CGeoPoint pos;
             int parentID;
-            float depth;
+            double depth;
             bool checkCollision(const CGeoPoint& p)
             {
                 // float margin = pos.dist(p) - 2*robot_radius;
@@ -40,7 +40,7 @@ class rrtTree
         //get the nearest node ID to
         int getNearestNodeID(const CGeoPoint& p);
         //
-        vector<int> getPath(int end_id);
+//        vector<int> getPath(int end_id);
         void clearTree();
         vector<rrtNode> rrt_tree;
 };

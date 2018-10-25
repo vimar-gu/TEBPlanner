@@ -35,7 +35,14 @@ void Trajectory::findPath(const CGeoPoint& s, const CGeoPoint& g, vector<Obstacl
                 // if get the goal
                 if(toGoalSuccess)
                 {
-                    rrt_path = my_rrt.getPath(my_rrt.getSize()-1);
+                    //add goal to
+//                    cout << "toGoalSuccess" << endl;
+                    goal.ID = my_rrt.getSize();
+                    goal.parentID = nearest_goal.ID;
+                    goal.depth = nearest_goal.depth + goal.pos.dist(nearest_goal.pos);
+                    my_rrt.addNewNode(goal);
+                    cout << "my_rrt.Size = "<< my_rrt.getSize() << endl;
+                    rrt_path = getPath(my_rrt.getSize()-1);
                     break;
                 }
             }
@@ -146,13 +153,41 @@ bool Trajectory::addNewNode2RRT(rrtTree::rrtNode& q_rand)
     CVector deltaL = q_rand.pos - q_near.pos;
     CVector theta = deltaL / deltaL.mod();
     q_new.pos = q_near.pos + theta * rrtStepSize;
-    q_new.parentID = q_nearID;
-
     //to check if there is any obstacle between q_near and q_new
     if(pointCheck(q_near, q_new))
     {
+        double cost = q_near.depth + rrtStepSize;
+        int parentID = q_near.ID;
+        for(int i = 0; i < my_rrt.getSize(); i++)
+        {
+            if(q_new.pos.dist(my_rrt.rrt_tree[i].pos) < RADIUS)
+            {
+
+                double temp_cost = (my_rrt.rrt_tree[i].depth + q_new.pos.dist(my_rrt.rrt_tree[i].pos));
+                if(temp_cost < cost)
+                {
+                  cost =  temp_cost;
+                  parentID = i;
+                }
+            }
+        }
+
+        q_new.parentID = parentID;
+        q_new.depth = cost;
         q_new.ID = my_rrt.getSize();
-        q_new.depth = q_near.depth + rrtStepSize;
+
+        for(int i = 0; i < my_rrt.getSize(); i++)
+        {
+            if(q_new.pos.dist(my_rrt.rrt_tree[i].pos) < RADIUS)
+            {
+                double cost = (q_new.depth + my_rrt.rrt_tree[i].pos.dist(q_new.pos));
+                if(cost < my_rrt.rrt_tree[i].depth)
+                {
+                    my_rrt.rrt_tree[i].depth = cost;
+                    my_rrt.rrt_tree[i].parentID = q_new.ID;
+                }
+            }
+        }
         my_rrt.addNewNode(q_new);
         //calculate the distance from q_new to goal
         double distance = q_new.pos.dist(goal.pos);
@@ -192,7 +227,12 @@ bool Trajectory::checkCollision(const CGeoPoint& p)
 
     return index;
 }
-
+/**
+ * @brief Trajectory::pointCheck
+ * @param m
+ * @param n
+ * @return true if there is no obstacle between m and n
+ */
 bool Trajectory::pointCheck(rrtTree::rrtNode& m, rrtTree::rrtNode& n)
 {
     double p = 0;
@@ -210,7 +250,39 @@ bool Trajectory::pointCheck(rrtTree::rrtNode& m, rrtTree::rrtNode& n)
     }
     return true;
 }
-
+vector<int> Trajectory::getPath(int end_id)
+{
+    vector<int> path;
+    path.push_back(end_id); //push goal to path
+    rrtTree::rrtNode init = my_rrt.getNode(end_id), temp = init;
+    // init is the fixed node, temp is the moving node
+    while(temp.ID != 0)
+    {
+        //回溯优化路径
+        while (temp.ID != 0 && pointCheck(init, my_rrt.getNode(temp.parentID)))
+        {
+            temp = my_rrt.getNode(temp.parentID);
+        }
+        path.insert(path.begin(), temp.ID);
+        init = temp;
+        if (temp.ID != 0)
+            temp = my_rrt.getNode(temp.parentID);
+        else break;
+    }
+    start.pos.print();
+    my_rrt.getNode(path.front()).pos.print();
+    return path;
+}
+//vector<int> Trajectory::getPath(int end_id)
+//{
+//    vector<int> path;
+//    path.push_back(end_id);
+//    while(my_rrt.rrt_tree[path.front()].ID != 0)
+//    {
+//        path.insert(path.begin(), my_rrt.rrt_tree[path.front()].parentID);
+//    }
+//    return path;
+//}
 void Trajectory::setTrajectoryMethod(int method) {
     trajMethod = method ? TEB : RRT;
 }

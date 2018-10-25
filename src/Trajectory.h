@@ -32,6 +32,7 @@ public:
     bool pointCheck(rrtTree::rrtNode& m, rrtTree::rrtNode& n);
     void setTrajectoryMethod(int method);
     void plan(CGeoPoint start, CGeoPoint end, vector<Obstacle> obs);
+    vector<int> getPath(int end_id);
     vector<State> trajVec;
 
 private:
