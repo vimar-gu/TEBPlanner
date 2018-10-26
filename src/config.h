@@ -1,7 +1,5 @@
-#ifndef CONFIG_H
+﻿#ifndef CONFIG_H
 #define CONFIG_H
-
-// the const parameters for field painting
 
 extern int ROBOT_NUMBER; // the number of our robots
 extern int OBSTACLE_NUMBER; // the number of obstacles
@@ -31,5 +29,15 @@ extern double MAX_ROTATION_ACCELERATION;
 // the const parameters for obstacle avoiding
 
 extern double MIN_OBSTACLE_DISTANCE;
+
+// jiangchao
+
+extern int WIDTH;
+extern int HEIGHT;
+extern int rrtStepSize;
+extern int acceptRadius;
+extern int GOAL_RATE;
+extern int ROBOT_RADIUS;
+extern int RADIUS;
 
 #endif // CONFIG_H

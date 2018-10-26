@@ -1,4 +1,4 @@
-#ifndef WORLD_H
+﻿#ifndef WORLD_H
 #define WORLD_H
 #include <iostream>
 #include <vector>
@@ -7,6 +7,8 @@
 #include "Trajectory.h"
 #include <QObject>
 #include <QString>
+#include "config.h"
+
 using namespace std;
 
 class CWorld : public QObject {

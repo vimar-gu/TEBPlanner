@@ -1,4 +1,4 @@
-#include "config.h"
+﻿#include "config.h"
 
 // field config
 
@@ -31,3 +31,13 @@ double MAX_ROTATION_ACCELERATION = 15;
 // obstacle config
 
 double MIN_OBSTACLE_DISTANCE = 100;
+
+//jiangchao
+
+int WIDTH = 720;
+int HEIGHT = 720;
+int rrtStepSize = 10;
+int acceptRadius = 1;
+int GOAL_RATE = 50;
+int ROBOT_RADIUS = 10;
+int RADIUS  = 50;

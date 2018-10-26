@@ -22,7 +22,9 @@ SOURCES += \
     src/Tebplanner.cpp \
     src/Utils.cpp \
     src/config.cpp \
-    src/Optimizer.cpp
+    src/Optimizer.cpp \
+    src/rrtTree.cpp
+
 
 RESOURCES += qml.qrc
 
@@ -48,4 +50,5 @@ HEADERS += \
     src/Tebplanner.h \
     src/Utils.h \
     src/Tebforce.h \
-    src/Optimizer.h
+    src/Optimizer.h \
+    src/rrtTree.h
