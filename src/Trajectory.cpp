@@ -16,7 +16,7 @@ void Trajectory::plan(State start, State end, vector<Obstacle> obs) {
     if (pathUpdated) {
         makeRRT2Line(rrtTrajVec, start.pos());
     }
-//    TEBPlanner tebPlanner(trajVec, start, end, obs);
+    TEBPlanner tebPlanner(trajVec, start, end, obs);
 }
 
 void Trajectory::setTrajectoryMethod(int method) {

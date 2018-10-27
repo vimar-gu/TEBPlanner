@@ -149,7 +149,7 @@ vector<int> RRTPlanner::getPath(int end_id) {
     RRTNode init = rrtTree.getNode(end_id), temp = init;
     // init is the fixed node, temp is the moving node
     while(temp.ID != 0) {
-        //回溯优化路径
+        //back optimization
         while (temp.ID != 0 && pointCheck(init, rrtTree.getNode(temp.parentID))) {
             temp = rrtTree.getNode(temp.parentID);
         }
