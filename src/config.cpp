@@ -36,8 +36,8 @@ double MIN_OBSTACLE_DISTANCE = 100;
 
 int WIDTH = 720;
 int HEIGHT = 720;
-int rrtStepSize = 10;
-int acceptRadius = 1;
+int RRT_STEP_SIZE = 10;
+int ACCEPT_RADIUS = 1;
 int GOAL_RATE = 50;
 int ROBOT_RADIUS = 10;
 int RADIUS  = 50;

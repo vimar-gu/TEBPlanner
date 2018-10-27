@@ -34,8 +34,8 @@ extern double MIN_OBSTACLE_DISTANCE;
 
 extern int WIDTH;
 extern int HEIGHT;
-extern int rrtStepSize;
-extern int acceptRadius;
+extern int RRT_STEP_SIZE;
+extern int ACCEPT_RADIUS;
 extern int GOAL_RATE;
 extern int ROBOT_RADIUS;
 extern int RADIUS;

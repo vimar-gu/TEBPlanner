@@ -9,7 +9,6 @@ using namespace std;
 class TEBPlanner
 {
 public:
-//    TEBPlanner() {}
     TEBPlanner(vector<State*>& trajVec, State start, State end, vector<Obstacle> obs) :
         start_(start), end_(end), obs_(obs) { plan(trajVec); }
     void plan(vector<State*>& trajVec);

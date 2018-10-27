@@ -1,4 +1,4 @@
-#include "Tebplanner.h"
+#include "TEBPlanner.h"
 #include "Utils.h"
 #include <QDebug>
 

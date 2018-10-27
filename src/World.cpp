@@ -25,7 +25,7 @@ CWorld::CWorld() {
 void CWorld::start() {
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(fresh()));
-    timer->start(1000);
+    timer->start(10);
 }
 
 // update the trajectory points according to the change of the field
@@ -40,18 +40,8 @@ void CWorld::fresh() {
 void CWorld::freshTraj() {
     for (Robot& robot : robotVec) {
         traj.plan(robot, target, obsVec);
-        State* nextTraj = traj.getFirstState();
-        robot.setPos(robot.pos() + nextTraj->vel() / 100);
-        qDebug() << "1";
-        traj.findPath(robot.pos(),target.pos(),obsVec);
     }
 }
-
-//void CWorld::freshTraj() {
-//    for (Robot robot : robotVec) {
-//        traj.plan(robot.pos(), target.pos(), obsVec);
-//    }
-//}
 
 // add a new obstacle to a random place regardless of the collision
 
@@ -66,7 +56,6 @@ void CWorld::addObstacle() {
 // delete the selected obstacle according to the mouse event
 
 void CWorld::deleteObstacle(MoveObj* obj) {
-    //
     auto obsIterator = find_if(obsVec.begin(), obsVec.end(), [=](Obstacle& obs){ return obj->pos() == obs.pos(); });
     if (obsIterator != obsVec.end()) obsVec.erase(obsIterator);
 }
