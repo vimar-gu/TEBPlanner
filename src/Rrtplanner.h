@@ -34,7 +34,7 @@ public:
         goal_(goal), rrtTree(start), obsVec(obs) {
         setNearestNode(start);
     }
-    bool findRRTPath(vector<State*>& trajVec);
+    bool findRRTPath(vector<CGeoPoint>& trajVec);
 
     bool generateRandNode(RRTNode& q_rand);
     bool addNewNode2RRT(RRTNode& q_rand);

@@ -14,7 +14,7 @@ int RRTTree::getNearestNodeID(const CGeoPoint& p) {
     return index;
 }
 
-bool RRTPlanner::findRRTPath(vector<State*>& trajVec) {
+bool RRTPlanner::findRRTPath(vector<CGeoPoint>& trajVec) {
     RRTNode qRand;
     vector<int> rrtPath;
     srand((unsigned)time(NULL));
@@ -46,15 +46,14 @@ bool RRTPlanner::findRRTPath(vector<State*>& trajVec) {
     }
 
     for(size_t i = 0; i < rrtPath.size(); i++) {
-        State* tempState = new State(rrtTree.rrtVec[rrtPath[i]].pos);
-        trajVec.push_back(tempState);
+        CGeoPoint tempPos = rrtTree.rrtVec[rrtPath[i]].pos;
+        trajVec.push_back(tempPos);
     }
 
     return true;
 }
 
-bool RRTPlanner::generateRandNode(RRTNode& qRand)
-{
+bool RRTPlanner::generateRandNode(RRTNode& qRand) {
     int q = rand() % 100;
     if (q < GOAL_RATE) {
         qRand = goal_;
@@ -66,8 +65,7 @@ bool RRTPlanner::generateRandNode(RRTNode& qRand)
     return !checkCollision(qRand.pos);
 }
 
-bool RRTPlanner::addNewNode2RRT(RRTNode& qRand)
-{
+bool RRTPlanner::addNewNode2RRT(RRTNode& qRand) {
     RRTNode qNear, qNew;
     //find the nearest_nodes in rrt_tree
     int qNearID = rrtTree.getNearestNodeID(qRand.pos);
