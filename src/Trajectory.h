@@ -15,16 +15,21 @@ namespace {
 class Trajectory
 {
 public:
-    Trajectory() {}
+    Trajectory() : start_(CGeoPoint(-999, -999)), end_(CGeoPoint(-999, -999)) {}
     ~Trajectory() {}
     void clearTraj();
     void plan(State start, State end, vector<Obstacle> obs);
+    bool checkUpdate(State start, State end, vector<Obstacle>& obs);
     void setTrajectoryMethod(int method);
-    void makeRRT2Line(vector<CGeoPoint>& rrtTrajVec, CGeoPoint start);
+    void makeRRT2Line(vector<CGeoPoint>& rrtTrajVec);
+    vector<CGeoPoint> rrtTrajVec;
     vector<State*> trajVec;
 
 private:
     int trajMethod;
+    State start_;
+    State end_;
+    State* nextState;
 };
 
 #endif // ALGORITHM_H

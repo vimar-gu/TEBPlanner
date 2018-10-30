@@ -9,21 +9,61 @@ void Trajectory::clearTraj() {
 }
 
 void Trajectory::plan(State start, State end, vector<Obstacle> obs) {
-    clearTraj();
-    vector<CGeoPoint> rrtTrajVec;
-    RRTPlanner rrtPlanner(start.pos(), end.pos(), obs);
-    bool pathUpdated = rrtPlanner.findRRTPath(rrtTrajVec);
-    if (pathUpdated) {
-        makeRRT2Line(rrtTrajVec, start.pos());
+//    clearTraj();
+    bool needUpdate = checkUpdate(start, end, obs);
+
+    if (needUpdate) {
+        start_ = start;
+        RRTPlanner rrtPlanner(start.pos(), end.pos(), obs);
+        bool pathUpdated = rrtPlanner.findRRTPath(rrtTrajVec);
+        if (pathUpdated) {
+            makeRRT2Line(rrtTrajVec);
+        }
     }
-    TEBPlanner tebPlanner(trajVec, start, end, obs);
+//    TEBPlanner tebPlanner(trajVec, start, end, obs);
+}
+
+bool Trajectory::checkUpdate(State start, State end, vector<Obstacle>& obs) {
+
+    // the traj is not initiated
+    if (trajVec.size() == 0 || rrtTrajVec.size() == 0 || rrtTrajVec.size() == 1)
+        return true;
+
+    // the target is changed
+    if (!(end_ == end)) {
+        end_ = end;
+        return true;
+    }
+
+    // the current place is not on the trajectory
+    nextState = trajVec[0];
+    CGeoSegment tmpSeg(start_.pos(), nextState->pos());
+    double minDist2Traj = tmpSeg.dist2Point(start.pos());
+    size_t i = 1;
+    for (; i < trajVec.size(); i++) {
+        tmpSeg = CGeoSegment(trajVec[i - 1]->pos(), trajVec[i]->pos());
+        if (tmpSeg.dist2Point(start.pos()) < minDist2Traj) {
+            minDist2Traj = tmpSeg.dist2Point(start.pos());
+            nextState = trajVec[i];
+        }
+    }
+    if (minDist2Traj > 5) return true;
+
+    for (size_t i = 0; i < obs.size(); i++) {
+        if (obs[i].checkSegment(start.pos(), rrtTrajVec[0])) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void Trajectory::setTrajectoryMethod(int method) {
     trajMethod = method ? TEB : RRT;
 }
 
-void Trajectory::makeRRT2Line(vector<CGeoPoint>& rrtTrajVec, CGeoPoint start) {
+void Trajectory::makeRRT2Line(vector<CGeoPoint>& rrtTrajVec) {
+    clearTraj();
     double routeLength = 0;
     for (size_t i = 0; i < rrtTrajVec.size() - 1; i++) {
         routeLength += (rrtTrajVec[i] - rrtTrajVec[i + 1]).mod();

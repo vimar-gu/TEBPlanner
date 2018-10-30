@@ -15,9 +15,11 @@ int RRTTree::getNearestNodeID(const CGeoPoint& p) {
 }
 
 bool RRTPlanner::findRRTPath(vector<CGeoPoint>& trajVec) {
+    vector<CGeoPoint>().swap(trajVec);
     RRTNode qRand;
     vector<int> rrtPath;
     srand((unsigned)time(NULL));
+    static int i = 0;
     while(true)
     {
         bool randNodeSuccess = false, addNewNodeSuccess = false, toGoalSuccess = false;
@@ -77,7 +79,7 @@ bool RRTPlanner::addNewNode2RRT(RRTNode& qRand) {
     qNew.pos = qNear.pos + theta * RRT_STEP_SIZE;
 
     //to check if there is any obstacle between q_near and q_new
-    if(pointCheck(qNear, qNew)) {
+    if(!pointCheck(qNear, qNew)) {
         double cost = qNear.depth + RRT_STEP_SIZE;
         int parentID = qNear.ID;
         for(int i = 0; i < rrtTree.getSize(); i++) {
@@ -123,24 +125,18 @@ bool RRTPlanner::checkNode2Goal(RRTNode &node) {
 }
 
 bool RRTPlanner::checkCollision(const CGeoPoint& p) {
-    bool index = false;
     //check if the new node is in the obs
     for(size_t i = 0; i < obsVec.size(); i++) {
-        if(obsVec[i].checkCollision(p)) {
-            index = true;
-            break;
-        }
+        if(obsVec[i].checkPoint(p)) return true;
     }
-    return index;
+    return false;
 }
 
 bool RRTPlanner::pointCheck(RRTNode& m, RRTNode& n) {
-    CGeoLine tmpLine(m.pos, n.pos);
     for (size_t i = 0; i < obsVec.size(); i++) {
-        CGeoPoint proj = tmpLine.projection(obsVec[i].pos());
-        if ((proj - obsVec[i].pos()).mod() < 2 * OBSTACLE_RADIUS) return false;
+        if (obsVec[i].checkSegment(m.pos, n.pos)) return true;
     }
-    return true;
+    return false;
 }
 
 vector<int> RRTPlanner::getPath(int end_id) {
@@ -150,7 +146,7 @@ vector<int> RRTPlanner::getPath(int end_id) {
     // init is the fixed node, temp is the moving node
     while(temp.ID != 0) {
         //back optimization
-        while (temp.ID != 0 && pointCheck(init, rrtTree.getNode(temp.parentID))) {
+        while (temp.ID != 0 && !pointCheck(init, rrtTree.getNode(temp.parentID))) {
             temp = rrtTree.getNode(temp.parentID);
         }
         path.insert(path.begin(), temp.ID);

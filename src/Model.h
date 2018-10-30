@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include "config.h"
 
 using namespace std;
@@ -23,6 +24,7 @@ public:
     {
         cout << "vector = " << _x << " " << _y << endl;
     }
+    bool operator ==(const CVector& rhs) { return ((this->x() == rhs.x()) && (this->y() == rhs.y())); }
     CVector operator +(const CVector& v) const { return CVector(_x + v.x(), _y + v.y()); }
     CVector operator -(const CVector& v) const { return CVector(_x - v.x(), _y - v.y()); }
     CVector operator *(double a) const { return CVector(_x * a, _y * a); } //向量数乘
@@ -98,21 +100,46 @@ private:
     double _a, _b, _c;
 };
 
-class CGeoLineLineIntersection{
+// the class of segments
+
+class CGeoSegment: public CGeoLine {
 public:
-    CGeoLineLineIntersection(const CGeoLine& line_1, const CGeoLine& line_2);
-    bool Intersectant() const { return _intersectant;	}
-    const CGeoPoint& IntersectPoint() const { return _point; }
+    CGeoSegment() {}
+    CGeoSegment(const CGeoPoint& p1, const CGeoPoint& p2) : CGeoLine(p1, p2), _start(p1), _end(p2) {
+        _compareX = std::abs(p1.x() - p2.x()) > std::abs(p1.y() - p2.y());
+        _center = CGeoPoint((p1.x()+p2.x())/2, (p1.y()+p2.y())/2);
+    }
+    bool IsPointOnLineOnSegment(const CGeoPoint& p) const {
+        if(_compareX){
+            return p.x() > (std::min)(_start.x(), _end.x()) && p.x() < (std::max)(_start.x(), _end.x());
+        }
+        return p.y() > (std::min)(_start.y(), _end.y()) && p.y() < (std::max)(_start.y(), _end.y());
+    }
+    double dist2Point(const CGeoPoint& p) {
+        CGeoPoint tmpProj = projection(p);
+        if (IsPointOnLineOnSegment(tmpProj)) return p.dist(tmpProj);
+        else return min(_start.dist(p), _end.dist(p));
+    }
+    const CGeoPoint& start() const { return _start; }
+    const CGeoPoint& end() const { return _end; }
+    const CGeoPoint& center() {return _center;}
+
 private:
-    bool _intersectant;
-    CGeoPoint _point;
+    CGeoPoint _start;
+    CGeoPoint _end;
+    CGeoPoint _center;
+    bool _compareX;
 };
-struct MoveObj {
+
+class MoveObj {
 public:
-    MoveObj() : _pos(CGeoPoint(0, 0)), _vel(CVector(0, 0)), _dir(0), _rotVel(0), _radius(0) {}
+    MoveObj() : _pos(CGeoPoint(0, 0)), _vel(CVector(0, 0)), _dir(0), _rotVel(0), _radius(OBSTACLE_RADIUS) {}
     MoveObj(double r) : _pos(CGeoPoint(0, 0)), _vel(CVector(0, 0)), _dir(0), _rotVel(0), _radius(r) {}
     MoveObj(CGeoPoint pos, double r = OBSTACLE_RADIUS) : _pos(pos), _vel(CVector(0, 0)), _dir(0), _rotVel(0), _radius(r) {}
     MoveObj(double x, double y, double r = OBSTACLE_RADIUS) : _pos(CGeoPoint(x, y)), _vel(CVector(0, 0)), _dir(0), _rotVel(0), _radius(r) {}
+    bool operator==(const MoveObj& rhs) {
+        return (this->pos() == rhs.pos() && this->vel() == rhs.vel() && this->dir() == rhs.dir() && this->rotVel() == rhs.rotVel());
+    }
     CGeoPoint pos() const { return _pos; }
     CVector vel() const { return _vel; }
     double dir() const { return _dir; }
@@ -121,14 +148,6 @@ public:
     void setVel(const CVector& vel) { _vel = CVector(vel); }
     void setDir(const double& dir) { _dir = dir; }
     void setRotVel(const double& rotVel) { _rotVel = rotVel; }
-    bool checkCollision(const CGeoPoint& p) {
-        if (margin(p) > 0.0)
-            return false;
-        else return true;
-    }
-    double margin(const CGeoPoint& p) {
-        return _pos.dist(p) - _radius - ROBOT_RADIUS;
-    }
     CGeoPoint _pos;
     CVector _vel;
     double _dir;
@@ -138,11 +157,25 @@ public:
 
 // define the obstacle the same as moveobj
 
-typedef MoveObj Obstacle;
-
 typedef MoveObj Robot;
 
 typedef MoveObj State;
+
+class Obstacle : public MoveObj {
+public:
+    Obstacle() : MoveObj() {}
+    Obstacle(double x, double y) : MoveObj(x, y) {}
+    bool checkSegment(const CGeoPoint& m, const CGeoPoint& n) {
+        CGeoSegment tmpSeg(m, n);
+        return tmpSeg.dist2Point(_pos) - _radius - ROBOT_RADIUS < 0.0;
+    }
+    bool checkPoint(const CGeoPoint& p) { // true if the point is not safe
+        return margin(p) < 0.0;
+    }
+    double margin(const CGeoPoint& p) {
+        return _pos.dist(p) - _radius - ROBOT_RADIUS;
+    }
+};
 
 class RoundObstacle : private Obstacle {
 
