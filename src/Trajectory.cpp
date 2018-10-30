@@ -9,7 +9,7 @@ void Trajectory::clearTraj() {
 }
 
 void Trajectory::plan(State start, State end, vector<Obstacle> obs) {
-//    clearTraj();
+    clearTraj();
     bool needUpdate = checkUpdate(start, end, obs);
 
     if (needUpdate) {
@@ -20,7 +20,7 @@ void Trajectory::plan(State start, State end, vector<Obstacle> obs) {
             makeRRT2Line(rrtTrajVec);
         }
     }
-//    TEBPlanner tebPlanner(trajVec, start, end, obs);
+    TEBPlanner tebPlanner(trajVec, start, end, obs);
 }
 
 bool Trajectory::checkUpdate(State start, State end, vector<Obstacle>& obs) {
@@ -49,8 +49,9 @@ bool Trajectory::checkUpdate(State start, State end, vector<Obstacle>& obs) {
     }
     if (minDist2Traj > 5) return true;
 
+//    for (int i = 0; i < rrtTrajVec.size(); i++) qDebug() << i << rrtTrajVec[i].x() << rrtTrajVec[i].y();
     for (size_t i = 0; i < obs.size(); i++) {
-        if (obs[i].checkSegment(start.pos(), rrtTrajVec[0])) {
+        if (obs[i].checkSegment(start.pos(), rrtTrajVec[1])) {
             return true;
         }
     }

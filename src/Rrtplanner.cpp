@@ -15,12 +15,11 @@ int RRTTree::getNearestNodeID(const CGeoPoint& p) {
 }
 
 bool RRTPlanner::findRRTPath(vector<CGeoPoint>& trajVec) {
-    vector<CGeoPoint>().swap(trajVec);
     RRTNode qRand;
     vector<int> rrtPath;
     srand((unsigned)time(NULL));
-    static int i = 0;
-    while(true)
+    int index = 0;
+    while(index++ < 500)
     {
         bool randNodeSuccess = false, addNewNodeSuccess = false, toGoalSuccess = false;
 
@@ -47,6 +46,9 @@ bool RRTPlanner::findRRTPath(vector<CGeoPoint>& trajVec) {
         }
     }
 
+    if (rrtPath.size() > 1) {
+        vector<CGeoPoint>().swap(trajVec);
+    }
     for(size_t i = 0; i < rrtPath.size(); i++) {
         CGeoPoint tempPos = rrtTree.rrtVec[rrtPath[i]].pos;
         trajVec.push_back(tempPos);
