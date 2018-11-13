@@ -29,7 +29,7 @@ private:
     int trajMethod;
     State start_;
     State end_;
-    State* nextState;
+    int nextState;
 };
 
 #endif // ALGORITHM_H

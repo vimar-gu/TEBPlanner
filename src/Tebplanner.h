@@ -13,12 +13,13 @@ public:
         start_(start), end_(end), obs_(obs) { plan(trajVec); }
     void plan(vector<State*>& trajVec);
     void initOptimize();
+    void optimizeTrajVec(vector<State*>& trajVec, State start, State end);
 
     void addVelocityForce(State* frontState, State* currentState);
     void addVelocityEndForce(State* currentState, State* endState);
     void addAccelerationForce(State* frontState, State* currentState, State* backState);
-    void addAccelerationStartForce(State* currentState);
-    void addAccelerationEndForce(State *currentState);
+    void addAccelerationStartForce(State* frontState, State* currentState);
+    void addAccelerationEndForce(State* currentState, State* endState);
     void addObstacleForce(State* obstacleState, State* currentState);
     void prune(vector<State*>& trajVec);
 

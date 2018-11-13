@@ -23,8 +23,7 @@ private:
     void fillField();
     void paintRobot(const QColor &robotColor, const QColor &dirColor, qreal x, qreal y, qreal dir);
     void paintObstacle(const QColor &color, qreal x, qreal y);
-    void paintTarget(const QColor &color, qreal x, qreal y);
-    void paintTraj(const QColor &color, qreal x, qreal y);
+    void paintTraj(const QColor &color, const QColor &dirColor, qreal x, qreal y, double dir);
     void checkClosestRobot(double x,double y);
     void leftMoveEvent(QMouseEvent *e);
     void leftPressEvent(QMouseEvent *e);

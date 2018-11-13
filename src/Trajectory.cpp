@@ -9,10 +9,10 @@ void Trajectory::clearTraj() {
 }
 
 void Trajectory::plan(State start, State end, vector<Obstacle> obs) {
-    clearTraj();
+//    clearTraj();
     bool needUpdate = checkUpdate(start, end, obs);
 
-    if (needUpdate) {
+    if (true/*needUpdate*/) {
         start_ = start;
         RRTPlanner rrtPlanner(start.pos(), end.pos(), obs);
         bool pathUpdated = rrtPlanner.findRRTPath(rrtTrajVec);
@@ -36,15 +36,15 @@ bool Trajectory::checkUpdate(State start, State end, vector<Obstacle>& obs) {
     }
 
     // the current place is not on the trajectory
-    nextState = trajVec[0];
-    CGeoSegment tmpSeg(start_.pos(), nextState->pos());
+    nextState = 0;
+    CGeoSegment tmpSeg(start_.pos(), trajVec[nextState]->pos());
     double minDist2Traj = tmpSeg.dist2Point(start.pos());
     size_t i = 1;
     for (; i < trajVec.size(); i++) {
         tmpSeg = CGeoSegment(trajVec[i - 1]->pos(), trajVec[i]->pos());
         if (tmpSeg.dist2Point(start.pos()) < minDist2Traj) {
             minDist2Traj = tmpSeg.dist2Point(start.pos());
-            nextState = trajVec[i];
+            nextState = i;
         }
     }
     if (minDist2Traj > 5) return true;

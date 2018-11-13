@@ -26,18 +26,21 @@ void Optimizer::optimize(int innerLoop, vector<State*>& trajVec, int index) {
 //            qDebug() << gt.mod() << mt.mod() << sqrt(vt) << deltaVec.mod();
 //            qDebug() << gt.mod() << deltaVec.dir();
             for (int i = index; i < trajVec.size(); i++)
-                trajVec[i]->setPos(trajVec[i]->pos() + -deltaVec);
+                trajVec[i]->setPos(trajVec[i]->pos() + -deltaVec * 5);
+//            trajVec[index]->setPos(trajVec[index]->pos() + -deltaVec);
         }
 
         lastLoss = currentLoss;
-//        qDebug() << totalForce.mod();
     }
+//    qDebug() << currentLoss.mod();
 }
 
 CVector Optimizer::calcTotalForce() {
     CVector totalForce(0, 0);
     for (TEBForce* force : forces_) {
-        CVector deltaForce = force->calcForce();
+        CVector deltaForce = force->calcForce().first;
+//        force->toStream();
+//        qDebug() << deltaForce.x() << deltaForce.y();
         totalForce = totalForce + deltaForce;
     }
     return totalForce;

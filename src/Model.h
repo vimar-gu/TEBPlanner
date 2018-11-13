@@ -27,8 +27,8 @@ public:
     bool operator ==(const CVector& rhs) { return ((this->x() == rhs.x()) && (this->y() == rhs.y())); }
     CVector operator +(const CVector& v) const { return CVector(_x + v.x(), _y + v.y()); }
     CVector operator -(const CVector& v) const { return CVector(_x - v.x(), _y - v.y()); }
-    CVector operator *(double a) const { return CVector(_x * a, _y * a); } //向量数乘
-    double operator *(CVector b) const { return double(_x * b.x() + _y * b.y()); } //向量点乘
+    CVector operator *(double a) const { return CVector(_x * a, _y * a); }
+    double operator *(CVector b) const { return double(_x * b.x() + _y * b.y()); }
     CVector operator /(double a) const { return CVector(_x / a, _y / a); }
     CVector operator -() const { return CVector(-1 * _x, -1 * _y); }
 private:

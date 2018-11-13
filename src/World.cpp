@@ -18,6 +18,7 @@ CWorld::CWorld() {
         obsVec.push_back(obs);
     }
     target.setPos(CGeoPoint(ORIGIN_X + 200, ORIGIN_Y + 200));
+//    target.setVel(CVector(100, 100));
 }
 
 // connected to the start button on the board

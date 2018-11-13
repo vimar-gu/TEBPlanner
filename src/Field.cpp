@@ -3,6 +3,7 @@
 #include "config.h"
 
 namespace{
+    const static QColor COLOR_RED(255, 0, 0);
     const static QColor COLOR_BLUE(210,210,255);
     const static QColor COLOR_YELLOW(241,231,36);
     const static QColor COLOR_PINK(255,63,149);
@@ -144,19 +145,14 @@ void Field::paintObstacle(const QColor &color, qreal x, qreal y) {
     pixmapPainter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius);
 }
 
-void Field::paintTarget(const QColor &color, qreal x, qreal y) {
-    static float radius = OBSTACLE_RADIUS;
-    pixmapPainter.setBrush(QBrush(color));
-    pixmapPainter.setPen(Qt::NoPen);
-    pixmapPainter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius);
-}
-
-void Field::paintTraj(const QColor &color, qreal x, qreal y) {
+void Field::paintTraj(const QColor &color, const QColor &dirColor, qreal x, qreal y, double dir) {
     static float radius = OBSTACLE_RADIUS / 2;
     pixmapPainter.setBrush(QBrush(Qt::NoBrush));
     pixmapPainter.setPen(QPen(color, 2));
     pixmapPainter.drawLine(QPointF(x - radius, y - radius), QPointF(x + radius, y + radius));
     pixmapPainter.drawLine(QPointF(x - radius, y + radius), QPointF(x + radius, y - radius));
+    pixmapPainter.setPen(QPen(dirColor, 2));
+    pixmapPainter.drawLine(QPointF(x, y), QPointF(x - 2 * radius * cos(dir), y - 2 * radius * sin(dir)));
 }
 
 // add elements onto the field
@@ -168,8 +164,11 @@ void Field::fillField() {
     for (auto obs : World::instance()->obsVec) {
         paintObstacle(COLOR_PINK, obs.pos().x(), obs.pos().y());
     }
-    paintTarget(COLOR_ORANGE, World::instance()->target.pos().x(), World::instance()->target.pos().y());
+    paintRobot(COLOR_ORANGE, COLOR_DARK_ORANGE, World::instance()->target.pos().x(), World::instance()->target.pos().y(), World::instance()->target.vel().dir());
     for (auto trajState : World::instance()->traj.trajVec) {
-        paintTraj(COLOR_DARK_ORANGE, trajState->pos().x(), trajState->pos().y());
+        paintTraj(COLOR_DARK_ORANGE, COLOR_RED, trajState->pos().x(), trajState->pos().y(), trajState->dir());
+    }
+    for (auto trajState : World::instance()->traj.rrtTrajVec) {
+        paintTraj(COLOR_RED, COLOR_DARK_ORANGE, trajState.x(), trajState.y(), 0);
     }
 }

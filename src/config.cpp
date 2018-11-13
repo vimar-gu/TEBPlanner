@@ -8,7 +8,7 @@ double ORIGIN_X = 100;
 double ORIGIN_Y = 100;
 double OBSTACLE_RADIUS = 10;
 double PI = 3.14159265358979323846;
-double FRAME_NUMBER = 10;
+double FRAME_NUMBER = 5;
 
 // trajectory config
 
@@ -23,8 +23,8 @@ double EPSILON = 0.01;
 
 // robot config
 
-double MAX_VELOCITY = 400;
-double MAX_ACCELERATION = 400;
+double MAX_VELOCITY = 1000;
+double MAX_ACCELERATION = 1000;
 double MAX_ROTATION_VELOCITY = 15;
 double MAX_ROTATION_ACCELERATION = 15;
 
