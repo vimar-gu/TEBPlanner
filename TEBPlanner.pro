@@ -19,7 +19,12 @@ SOURCES += \
     src/Model.cpp \
     src/World.cpp \
     src/Trajectory.cpp \
-    src/config.cpp
+    src/TEBPlanner.cpp \
+    src/Utils.cpp \
+    src/config.cpp \
+    src/Optimizer.cpp \
+    src/RRTPlanner.cpp
+
 
 RESOURCES += qml.qrc
 
@@ -41,4 +46,9 @@ HEADERS += \
     src/World.h \
     src/singleton.h \
     src/Trajectory.h \
-    src/config.h
+    src/config.h \
+    src/TEBPlanner.h \
+    src/Utils.h \
+    src/TEBForce.h \
+    src/Optimizer.h \
+    src/RRTPlanner.h

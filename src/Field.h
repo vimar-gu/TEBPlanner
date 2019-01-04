@@ -1,10 +1,11 @@
-#ifndef FIELD_H
+﻿#ifndef FIELD_H
 #define FIELD_H
 #include <QQuickPaintedItem>
 #include <QPainter>
 #include <QPainterPath>
 #include <QImage>
 #include "World.h"
+#include "config.h"
 
 class Field : public QQuickPaintedItem {
     Q_OBJECT
@@ -20,10 +21,9 @@ public slots:
 private:
     void initField();
     void fillField();
-    void paintRobot(const QColor &color, qreal x, qreal y);
+    void paintRobot(const QColor &robotColor, const QColor &dirColor, qreal x, qreal y, qreal dir);
     void paintObstacle(const QColor &color, qreal x, qreal y);
-    void paintTarget(const QColor &color, qreal x, qreal y);
-    void paintTraj(const QColor &color, qreal x, qreal y);
+    void paintTraj(const QColor &color, const QColor &dirColor, qreal x, qreal y, double dir);
     void checkClosestRobot(double x,double y);
     void leftMoveEvent(QMouseEvent *e);
     void leftPressEvent(QMouseEvent *e);
